@@ -1,0 +1,1439 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}</style>
+</head>
+<body>
+<title>Hoja de Vida Estudiantil</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: banda institucional azul y oro · barra de filtros fija (curso, alumno, búsqueda, ingresar registro) · ficha del alumno a ancho completo */
+:root{
+  --bg:#eef0f6; --surface:#ffffff; --sunk:#f5f6fa; --ink:#121a3a; --muted:#59607a; --line:#d5d9e6;
+  --navy:#0b1766; --navy-2:#071050; --gold:#f0c419; --gold-ink:#8a6a00; --on-navy:#ffffff;
+  --btn-bg:#0b1766; --btn-ink:#ffffff; --sel:#e6e9f6;
+  --pos:#2b7a4b; --neg:#b3262f; --apo:#6a4a9e; --jus:#a86c12; --kno:#0f6b74; --sus:#8c1c3a; --ret:#1f6aa5;
+  --f-display:"Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --f-body:"IBM Plex Sans", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  --r:6px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0a0f24; --surface:#121a35; --sunk:#0e1530; --ink:#e6e8f2; --muted:#98a0bd; --line:#26305a;
+  --navy:#0b1766; --navy-2:#060d40; --gold:#f3cf3a; --gold-ink:#f3cf3a; --on-navy:#ffffff;
+  --btn-bg:#f3cf3a; --btn-ink:#0a0f24; --sel:#1b2550;
+  --pos:#62c18d; --neg:#f0767f; --apo:#b89ce6; --jus:#e5b45c; --kno:#5cc6cf; --sus:#ff8fa6; --ret:#79b8f0; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0a0f24; --surface:#121a35; --sunk:#0e1530; --ink:#e6e8f2; --muted:#98a0bd; --line:#26305a;
+  --navy:#0b1766; --navy-2:#060d40; --gold:#f3cf3a; --gold-ink:#f3cf3a; --on-navy:#ffffff;
+  --btn-bg:#f3cf3a; --btn-ink:#0a0f24; --sel:#1b2550;
+  --pos:#62c18d; --neg:#f0767f; --apo:#b89ce6; --jus:#e5b45c; --kno:#5cc6cf; --sus:#ff8fa6; --ret:#79b8f0; color-scheme:dark}
+
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.45}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:10;background:var(--surface)}
+*{box-sizing:border-box}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+/* banda institucional */
+.band{background:linear-gradient(100deg,var(--navy-2),var(--navy) 60%);color:var(--on-navy);border-bottom:4px solid var(--gold)}
+.bandin{display:flex;align-items:center;gap:16px;padding-block:14px;flex-wrap:wrap}
+.crest{width:58px;height:auto;flex:none;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}
+.titles{flex:1 1 260px;min-width:0}
+.titles h1{font-family:var(--f-display);font-weight:700;font-size:30px;line-height:1;margin:0;letter-spacing:.02em;text-transform:uppercase}
+.titles p{margin:4px 0 0;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;opacity:.85}
+.status{font-size:12px;display:flex;align-items:center;gap:6px;opacity:.9}
+.status i{width:8px;height:8px;border-radius:50%;background:#9aa3c7;display:inline-block}
+.status.ok i{background:#5fd68f} .status.bad i{background:#ff7b84}
+
+/* barra de filtros */
+.filters{position:sticky;top:env(safe-area-inset-top, 0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line);box-shadow:0 2px 8px -6px rgba(0,0,0,.25)}
+.fin{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;padding-block:10px}
+.fin .field{flex:1 1 170px}
+.fin .search{flex:1.4 1 220px;position:relative}
+.fin .acts{display:flex;gap:8px;flex-wrap:wrap}
+.qres{position:absolute;left:0;right:0;top:100%;margin:4px 0 0;padding:4px;list-style:none;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 10px 30px -10px rgba(0,0,0,.35);max-height:320px;overflow:auto;z-index:6}
+.qres button{width:100%;display:flex;justify-content:space-between;gap:10px;border:0;background:none;padding:7px 9px;border-radius:4px;text-align:left;cursor:pointer}
+.qres button:hover,.qres button:focus-visible{background:var(--sel)}
+.qres small{color:var(--muted);white-space:nowrap}
+
+/* genéricos */
+.btn{border:1px solid var(--line);background:var(--surface);padding:8px 13px;border-radius:var(--r);cursor:pointer;font-weight:500;font-size:13.5px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--btn-bg);border-color:var(--btn-bg);color:var(--btn-ink);font-weight:600}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#121a3a;font-weight:600}
+.btn.danger{color:var(--neg);border-color:color-mix(in srgb,var(--neg) 40%,var(--line))}
+.btn.ghost{border-color:transparent;background:none;color:var(--muted)}
+.btn.ghost:hover{color:var(--ink)}
+.btn:disabled{opacity:.45;cursor:default}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.field>span{font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+input[type=text],input[type=date],input[type=search],input[type=tel],input[type=email],select,textarea{
+  width:100%;border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:8px 10px;min-width:0}
+textarea{resize:vertical;min-height:72px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px}
+.stack{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.label{font-size:11.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:600}
+.muted{color:var(--muted)}
+.hint{font-size:12.5px;color:var(--muted);margin:0}
+.empty{padding:48px 20px;text-align:center;color:var(--muted)}
+.empty strong{display:block;color:var(--ink);font-family:var(--f-display);font-weight:600;font-size:24px;letter-spacing:.01em;margin-bottom:4px}
+.empty img{width:72px;opacity:.9;margin-bottom:10px}
+.pos{--c:var(--pos)} .neg{--c:var(--neg)} .apo{--c:var(--apo)} .jus{--c:var(--jus)} .kno{--c:var(--kno)} .sus{--c:var(--sus)} .ret{--c:var(--ret)}
+.btn.sus{color:var(--sus);border-color:color-mix(in srgb,var(--sus) 45%,var(--line));font-weight:600}
+.banner{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 14px;border-radius:var(--r);border:1px solid color-mix(in srgb,var(--sus) 50%,var(--line));background:color-mix(in srgb,var(--sus) 10%,var(--surface));color:var(--ink)}
+.banner b{color:var(--sus);text-transform:uppercase;letter-spacing:.06em;font-size:12px}
+.badge{display:inline-block;margin-left:6px;font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--sus);border:1px solid currentColor;border-radius:4px;padding:0 5px;vertical-align:1px}
+input[type=number],input[type=time]{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:8px 10px;min-width:0}
+.estado{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.st{font-size:11.5px;padding:2px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.st.ok{color:var(--pos);border-color:color-mix(in srgb,var(--pos) 45%,var(--line))}
+.st.warn{color:var(--jus);border-color:color-mix(in srgb,var(--jus) 50%,var(--line));background:color-mix(in srgb,var(--jus) 10%,transparent)}
+.evacts{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.btn.sm{padding:4px 10px;font-size:12.5px}
+.pad{width:100%;height:190px;background:#ffffff;border:2px dashed var(--line);border-radius:8px;touch-action:none;cursor:crosshair;display:block}
+.firmares{background:var(--sunk);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;font-size:13px}
+.firmares b{display:block;font-size:14px}
+.chkrow{display:flex;gap:8px;align-items:flex-start}
+.chkrow input{width:17px;height:17px;margin-top:2px;accent-color:var(--navy)}
+
+main{padding-block:18px 40px;display:flex;flex-direction:column;gap:16px}
+
+/* nómina */
+.nhead{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;padding:16px 18px;border-bottom:1px solid var(--line)}
+.nhead h2{font-family:var(--f-display);font-weight:700;font-size:30px;line-height:1;margin:2px 0 4px;text-transform:uppercase;letter-spacing:.01em}
+.tablebox{overflow-x:auto}
+table.nom{width:100%;border-collapse:collapse;min-width:640px}
+.nom th{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);font-weight:600;background:var(--sunk)}
+.nom td{padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+.nom tbody tr{cursor:pointer}
+.nom tbody tr:hover{background:var(--sunk)}
+.nom .n{font-family:var(--f-mono);font-size:12px;color:var(--muted);width:44px}
+.nom .nm{font-weight:500;background:none;border:0;padding:0;cursor:pointer;text-align:left}
+.nom .rut{display:block;font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+.nom th.c,.nom td.c{text-align:center;width:52px}
+.dot{font-family:var(--f-mono);font-size:12px;display:inline-block;min-width:26px;padding:1px 5px;border-radius:4px;font-variant-numeric:tabular-nums}
+.dot.z{color:var(--line)}
+.dot:not(.z){color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);font-weight:500}
+.nom th.c{color:var(--c)}
+.nom td.chk,.nom th.chk{width:36px;text-align:center;padding-right:0}
+.nom input[type=checkbox]{width:17px;height:17px;accent-color:var(--navy);cursor:pointer}
+.nom tr.sel{background:var(--sel)}
+.nom td.act{text-align:right;width:70px}
+.selbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 18px;background:var(--sel);border-bottom:1px solid var(--line);font-weight:500}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+.kpi b{display:block;font-family:var(--f-mono);font-size:28px;font-weight:500;line-height:1.1;color:var(--ink)}
+.kpi.hl b{color:var(--sus)}
+.kpi span{font-size:12.5px;color:var(--muted)}
+.inf tbody tr{cursor:default}
+.inf td.num,.inf th.num{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.barbox{width:140px;height:9px;background:var(--sunk);border-radius:5px;overflow:hidden;border:1px solid var(--line)}
+.barbox i{display:block;height:100%;background:var(--sus);border-radius:5px}
+.secth{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;padding:14px 18px;border-bottom:1px solid var(--line)}
+.secth h3{margin:0;font-family:var(--f-display);font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:.02em}
+.filebox{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border:1px dashed var(--line);border-radius:var(--r);background:var(--sunk)}
+
+/* ficha */
+.ftop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.perfil{display:grid;grid-template-columns:200px minmax(0,1fr);gap:24px;padding:22px}
+.photo{width:100%;aspect-ratio:3/4;max-width:100%;border-radius:6px;overflow:hidden;background:var(--sunk);border:1px solid var(--line);display:grid;place-items:center;position:relative}
+.photo img{width:100%;height:100%;object-fit:cover;display:block}
+.photo .ini{font-family:var(--f-display);font-weight:700;font-size:56px;color:var(--muted);letter-spacing:.02em}
+.photo .ini small{display:block;font-family:var(--f-body);font-weight:400;font-size:12px;text-align:center;letter-spacing:0}
+.fotobtns{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.fotobtns .btn{flex:1 1 auto;justify-content:center;font-size:12.5px;padding:6px 8px}
+.pdata{display:flex;flex-direction:column;gap:16px;min-width:0}
+.pdata h2{font-family:var(--f-display);font-weight:700;font-size:38px;line-height:1;margin:4px 0 0;text-transform:uppercase;letter-spacing:.01em;text-wrap:balance;overflow-wrap:anywhere}
+.chipcurso{display:inline-block;background:var(--navy);color:var(--on-navy);border-bottom:2px solid var(--gold);padding:2px 10px;border-radius:4px;font-weight:600;font-size:12.5px;letter-spacing:.04em}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px 22px;margin:0}
+.facts div{min-width:0}
+.facts dt{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.facts dd{margin:2px 0 0;overflow-wrap:anywhere;white-space:pre-wrap}
+.counts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.count{border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;border-top:3px solid var(--c);background:var(--sunk)}
+.count b{display:block;font-family:var(--f-mono);font-size:26px;font-weight:500;color:var(--c);line-height:1.1}
+.count span{font-size:12.5px;color:var(--muted)}
+
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;cursor:pointer;font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px}
+.seg button i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.seg button[aria-pressed="true"]{border-color:var(--c);background:color-mix(in srgb,var(--c) 14%,var(--surface))}
+
+.tl{padding:18px 22px}
+.tlbar{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.tlbar h3{margin:0;font-family:var(--f-display);font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:.02em}
+.tlist{list-style:none;margin:8px 0 0;padding:0}
+.month{font-family:var(--f-display);font-weight:600;font-size:16px;color:var(--gold-ink);padding:16px 0 6px;border-bottom:1px solid var(--line);text-transform:uppercase;letter-spacing:.06em}
+.ev{display:grid;grid-template-columns:4px minmax(0,1fr);gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.ev .mk{background:var(--c);border-radius:2px}
+.evtop{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tag{font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--c)}
+.pill{font-size:11.5px;padding:1px 8px;border-radius:999px;border:1px solid currentColor}
+.pill.grave{color:var(--jus)} .pill.gravisima{color:var(--neg);background:color-mix(in srgb,var(--neg) 12%,transparent)} .pill.leve{color:var(--muted)}
+.evtop time{margin-left:auto;font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.ev p{margin:6px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;max-width:80ch}
+.extra{margin:6px 0 0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;font-size:13px}
+.extra dt{color:var(--muted)} .extra dd{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.evfoot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:6px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+
+/* ventana modal */
+.overlay{position:fixed;inset:0;z-index:30;background:color-mix(in srgb,#000 55%,transparent);display:flex;align-items:flex-start;justify-content:center;
+  padding:calc(24px + env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));overflow:auto}
+.modal{width:100%;max-width:680px;background:var(--surface);border-radius:10px;border-top:5px solid var(--gold);box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}
+.mhead{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--line)}
+.mhead h3{margin:0;font-family:var(--f-display);font-weight:700;font-size:24px;text-transform:uppercase;letter-spacing:.02em}
+.mbody{padding:18px 20px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);padding:0 20px;flex-wrap:wrap}
+.tabs button{border:0;background:none;padding:10px 12px;cursor:pointer;font-weight:500;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-1px}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--gold)}
+.inlinereg{border-top:4px solid var(--gold);scroll-margin-top:120px}
+.cam{position:relative;width:100%;max-width:360px;margin:0 auto;aspect-ratio:3/4;background:#000;border-radius:8px;overflow:hidden}
+.cam video,.cam img{width:100%;height:100%;object-fit:cover;display:block}
+.cam video{transform:scaleX(-1)}
+.tipobox{border-left:4px solid var(--c);padding-left:14px;display:flex;flex-direction:column;gap:12px}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom, 0px));background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:var(--r);font-size:13px;z-index:40;max-width:calc(100% - 32px)}
+
+@media (max-width:760px){
+  .perfil{grid-template-columns:1fr;padding:16px}
+  .fotocol{max-width:200px}
+  .counts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid2{grid-template-columns:1fr}
+  .pdata h2{font-size:30px}
+  .titles h1{font-size:24px}
+  .tl{padding:16px}
+  .fin .acts{width:100%}
+  .fin .acts .btn{flex:1 1 auto;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="band">
+  <div class="wrap bandin">
+    <img class="crest" src="data:image/webp;base64,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" alt="Insignia Instituto Comercial Alberto Valenzuela Llanos">
+    <div class="titles">
+      <h1>Hoja de Vida del Estudiante</h1>
+      <p>Instituto Comercial Alberto Valenzuela Llanos · Inspectoría General · San Fernando</p>
+    </div>
+    <div class="status" id="status"><i></i><span>Conectando…</span></div>
+  </div>
+</header>
+
+<nav class="filters" aria-label="Filtros">
+  <div class="wrap fin">
+    <label class="field"><span>Curso</span><select id="fCurso"></select></label>
+    <label class="field"><span>Alumno</span><select id="fAlumno"></select></label>
+    <div class="field search"><span>Buscar en todo el colegio</span>
+      <input type="search" id="q" placeholder="Nombre o RUT" autocomplete="off" aria-controls="qres">
+      <ul class="qres" id="qres" hidden></ul>
+    </div>
+    <div class="acts">
+      <button class="btn gold" type="button" id="btnRegistro">＋ Ingresar registro</button>
+      <button class="btn" type="button" id="btnInforme">Informe de suspensiones</button>
+      <button class="btn" type="button" id="btnRetiros">Informe de retiros</button>
+      <button class="btn" type="button" id="btnAdmin">Cursos y alumnos</button>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap" id="main"></main>
+
+<div class="overlay" id="ov" hidden><div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mtitle"></div></div>
+<input type="file" id="fotoIn" accept="image/jpeg,image/png,image/webp" hidden>
+<input type="file" id="camIn" accept="image/*" capture="environment" hidden>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+const LOGO=document.querySelector(".crest").src;
+const TIPOS={
+  positiva:{label:"Anotación positiva",plural:"Positivas",cls:"pos",desc:"Descripción de la anotación"},
+  negativa:{label:"Anotación negativa",plural:"Negativas",cls:"neg",desc:"Hecho observado"},
+  apoderado:{label:"Atención de apoderado",plural:"Atenciones apoderado",cls:"apo",desc:"Tema tratado"},
+  justificacion:{label:"Justificación",plural:"Justificaciones",cls:"jus",desc:"Observación"},
+  conocimiento:{label:"Toma de conocimiento",plural:"Tomas de conocimiento",cls:"kno",desc:"Detalle"},
+  suspension:{label:"Suspensión",plural:"Suspensiones",cls:"sus",desc:"Hechos que motivan la medida"},
+  retiro:{label:"Retiro en jornada",plural:"Retiros",cls:"ret",desc:"Observación"}
+};
+/* Inspector General que firma según nivel: 1° y 2° Medio / 3° y 4° Medio */
+function inspectorDe(cursoNombre){
+  const t=sinTildes(String(cursoNombre||"")).trim();const m=t.match(/^([1-4])/);
+  const n=m?Number(m[1]):/^primer/.test(t)?1:/^segund/.test(t)?2:/^tercer/.test(t)?3:/^cuart/.test(t)?4:0;
+  if(n===1||n===2)return{nombre:"Claudio Valenzuela Fuentes",cargo:"Inspector General · 1° y 2° Medio"};
+  if(n===3||n===4)return{nombre:"Luis Cádiz Fuenzalida",cargo:"Inspector General · 3° y 4° Medio"};
+  return{nombre:"",cargo:"Inspector(a) General"};
+}
+const TITULAR_PRES=/^Presencial: apoderado\(a\) titular/;
+function retirosPendientes(aid,exceptoId){return S.retiros.filter(e=>e.alumnoId===aid&&!e.firmado&&e.id!==exceptoId).sort((a,b)=>(a.fecha||"").localeCompare(b.fecha||""))}
+const COUNT_TIPOS=["positiva","negativa","apoderado","justificacion","suspension"];
+const FORM_TIPOS=["positiva","negativa","apoderado","justificacion","retiro"];
+const FIRMABLES=["apoderado","justificacion","conocimiento","suspension","retiro"];
+const TITULOS={positiva:"Registro de anotación positiva",negativa:"Registro de anotación negativa",apoderado:"Acta de atención de apoderado",justificacion:"Comprobante de justificación",conocimiento:"Toma de conocimiento de hoja de vida",suspension:"Notificación de suspensión y citación",retiro:"Registro de retiro durante la jornada escolar"};
+const DECLARA={apoderado:"El apoderado(a) declara haber asistido a la entrevista y haber tomado conocimiento de lo tratado y de los acuerdos registrados en esta acta.",
+  justificacion:"El apoderado(a) declara que la información y el respaldo entregados para esta justificación son fidedignos.",
+  conocimiento:"El apoderado(a) declara haber tomado conocimiento del contenido de la hoja de vida de su pupilo(a) correspondiente al periodo indicado.",
+  retiro:"El apoderado(a) titular declara autorizar el retiro del estudiante durante la jornada escolar en las condiciones registradas y asume su responsabilidad desde el momento de la salida del establecimiento.",
+  suspension:"El apoderado(a) declara haber recibido copia de esta notificación y haber tomado conocimiento de la medida de suspensión y de la citación."};
+const ORDEN=["positiva","negativa","apoderado","justificacion"];
+const PERIODOS={todo:"Todo el registro",mes:"Últimos 30 días",anio:"Año en curso",s1:"1er semestre",s2:"2do semestre"};
+const S={informe:false,susp:[],retiros:[],retPeriodo:"mes",retCurso:"",retJust:"",infPeriodo:"anio",sel:new Set(),cursos:[],alumnos:[],evCurso:[],evAlumno:[],foto:null,cursoId:null,alumnoId:null,filtro:"todos",periodo:"todo",confirm:null,canWrite:true,uid:null,db:null,tipo:"positiva"};
+let mcp=null,db=null,user=null,downloads=null,unsubCurso=null,unsubAlumno=null,unsubFoto=null;
+
+/* ---------- utilidades ---------- */
+function h(tag,attrs,...kids){
+  const e=document.createElement(tag);
+  for(const [k,v] of Object.entries(attrs||{})){
+    if(v==null||v===false) continue;
+    if(k.startsWith("on")) e.addEventListener(k.slice(2),v);
+    else if(k==="class") e.className=v;
+    else if(k==="text") e.textContent=v;
+    else if(k==="value") e.value=v;
+    else e.setAttribute(k,v===true?"":v);
+  }
+  for(const c of kids.flat(Infinity)){if(c==null||c===false)continue;e.append(c.nodeType?c:document.createTextNode(String(c)))}
+  return e;
+}
+const $=id=>document.getElementById(id);
+const coll=new Intl.Collator("es",{numeric:true,sensitivity:"base"});
+const sinTildes=s=>(s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+function hoy(){const d=new Date();return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)}
+function fdate(s,opt){if(!s)return"";const[y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d).toLocaleDateString("es-CL",opt||{day:"numeric",month:"short",year:"numeric"})}
+function toast(msg){const t=$("toast");t.textContent=msg;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,3000)}
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+const cursosOrd=()=>[...S.cursos].sort((a,b)=>coll.compare(a.nombre||"",b.nombre||""));
+const cursoDe=id=>S.cursos.find(c=>c.id===id);
+const alumnoActual=()=>S.alumnos.find(a=>a.id===S.alumnoId);
+const alumnosDe=cid=>S.alumnos.filter(a=>a.cursoId===cid).sort((a,b)=>coll.compare(a.nombre||"",b.nombre||""));
+const ordenEv=l=>[...l].sort((a,b)=>(b.fecha||"").localeCompare(a.fecha||"")||(b.creado||"").localeCompare(a.creado||""));
+function iniciales(n){const p=(n||"").replace(","," ").split(/\s+/).filter(Boolean);return ((p[0]||"")[0]||"")+((p[1]||"")[0]||"")}
+function enPeriodo(e,p){
+  if(p==="todo")return true; const f=e.fecha||""; const y=hoy().slice(0,4);
+  if(p==="mes"){const d=new Date();d.setDate(d.getDate()-30);return f>=new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)}
+  if(p==="anio")return f.startsWith(y);
+  if(p==="s1")return f>=y+"-01-01"&&f<=y+"-07-31";
+  if(p==="s2")return f>=y+"-08-01"&&f<=y+"-12-31";
+  return true;
+}
+async function guardar(fn,okMsg){
+  try{await fn();if(okMsg)toast(okMsg);return true}
+  catch(e){
+    if(e&&e.code==="invalid_argument"&&!S._probed){S._probed=true;S.canWrite=false;renderAll();toast("Tu acceso a esta hoja es de solo lectura.")}
+    else if(e&&e.code==="quota_exceeded")toast("La base de datos está llena. Elimina registros antiguos para seguir.");
+    else toast("No se pudo guardar. Revisa la conexión e intenta de nuevo.");
+    return false;
+  }
+}
+function setStatus(k,t){const s=$("status");s.className="status "+k;s.querySelector("span").textContent=t}
+function err(){setStatus("bad","Sin conexión con la base de datos")}
+
+/* ---------- filtros ---------- */
+function renderFiltros(){
+  const fc=$("fCurso"),fa=$("fAlumno");
+  fc.replaceChildren(h("option",{value:""},S.cursos.length?"Selecciona un curso":"Sin cursos"),...cursosOrd().map(c=>h("option",{value:c.id,selected:c.id===S.cursoId},c.nombre)));
+  const lista=S.cursoId?alumnosDe(S.cursoId):[];
+  fa.replaceChildren(h("option",{value:""},S.cursoId?"Toda la nómina ("+lista.length+")":"—"),...lista.map((a,i)=>h("option",{value:a.id,selected:a.id===S.alumnoId},(i+1)+". "+a.nombre)));
+  fa.disabled=!S.cursoId;
+  $("btnRegistro").hidden=$("btnAdmin").hidden=!S.canWrite;
+  $("btnRegistro").disabled=!S.alumnos.length;
+}
+$("fCurso").onchange=e=>{if(e.target.value)selectCurso(e.target.value);else{S.cursoId=null;S.alumnoId=null;renderAll()}};
+$("fAlumno").onchange=e=>{if(e.target.value)selectAlumno(e.target.value);else verNomina()};
+$("btnRegistro").onclick=()=>abrirRegistro();
+$("btnAdmin").onclick=()=>abrirAdmin(S.cursos.length?"alumno":"curso");
+$("btnRetiros").onclick=()=>{S.informe="retiros";S.alumnoId=null;if(unsubAlumno){unsubAlumno();unsubAlumno=null}if(unsubFoto){unsubFoto();unsubFoto=null}renderAll();window.scrollTo({top:0})};
+$("btnInforme").onclick=()=>{S.informe="susp";S.alumnoId=null;if(unsubAlumno){unsubAlumno();unsubAlumno=null}if(unsubFoto){unsubFoto();unsubFoto=null}renderAll();window.scrollTo({top:0})};
+
+/* búsqueda global */
+const q=$("q"),qres=$("qres");
+q.addEventListener("input",()=>{
+  const t=sinTildes(q.value.trim()).replace(/\./g,"");
+  if(!t){qres.hidden=true;return}
+  const m=S.alumnos.filter(a=>sinTildes(a.nombre).includes(t)||(a.rut||"").toLowerCase().replace(/\./g,"").includes(t)).sort((a,b)=>coll.compare(a.nombre,b.nombre)).slice(0,10);
+  qres.replaceChildren(...(m.length?m.map(a=>h("li",{},h("button",{type:"button",onmousedown:ev=>ev.preventDefault(),onclick:()=>{q.value="";qres.hidden=true;selectAlumno(a.id)}},
+    h("span",{text:a.nombre}),h("small",{text:(cursoDe(a.cursoId)||{}).nombre||""})))):[h("li",{class:"hint",style:"padding:8px",text:"Sin coincidencias."})]));
+  qres.hidden=false;
+});
+q.addEventListener("blur",()=>setTimeout(()=>qres.hidden=true,120));
+q.addEventListener("keydown",e=>{if(e.key==="Escape"){q.value="";qres.hidden=true}if(e.key==="Enter"){const b=qres.querySelector("button");if(b)b.click()}});
+
+/* ---------- navegación ---------- */
+function selectCurso(id){
+  if(S.cursoId!==id||!unsubCurso){
+    S.cursoId=id;S.evCurso=[];S.sel=new Set();lsSet("hv.curso",id);
+    if(unsubCurso)unsubCurso();
+    if(db)unsubCurso=db.collection("eventos").where("cursoId","==",id).onSnapshot(s=>{S.evCurso=s.docs.map(d=>({id:d.id,...d.data()}));if(!S.alumnoId)renderMain()},err);
+  }
+  verNomina();
+}
+function verNomina(){
+  S.alumnoId=null;S.confirm=null;S.informe=false;
+  if(unsubAlumno){unsubAlumno();unsubAlumno=null} if(unsubFoto){unsubFoto();unsubFoto=null}
+  renderAll(); window.scrollTo({top:0});
+}
+function selectAlumno(id){
+  const a=S.alumnos.find(x=>x.id===id); if(!a)return;
+  if(a.cursoId!==S.cursoId){S.cursoId=null;selectCurso(a.cursoId)}
+  S.alumnoId=id;S.evAlumno=[];S.foto=undefined;S.confirm=null;S.informe=false;
+  if(unsubAlumno)unsubAlumno(); if(unsubFoto)unsubFoto();
+  if(db){
+    unsubAlumno=db.collection("eventos").where("alumnoId","==",id).onSnapshot(s=>{S.evAlumno=s.docs.map(d=>({id:d.id,...d.data()}));renderTimeline();renderCounts()},err);
+    unsubFoto=db.doc("fotos/"+id).onSnapshot(s=>{S.foto=s.exists?(s.data().img||null):null;renderFoto()},()=>{});
+  }
+  renderAll(); window.scrollTo({top:0});
+}
+
+/* ---------- vista principal ---------- */
+function renderAll(){renderFiltros();renderMain()}
+function renderMain(){
+  const m=$("main");
+  if(S.db===false){m.replaceChildren(h("div",{class:"card empty"},h("img",{src:LOGO,alt:""}),h("strong",{text:"Sin conexión a la base de datos"}),"Abre esta página desde claude.ai para ver y guardar registros."));return}
+  if(S.informe==="susp"){renderInforme();return}
+  if(S.informe==="retiros"){renderRetiros();return}
+  if(!S.cursos.length){m.replaceChildren(h("div",{class:"card empty"},h("img",{src:LOGO,alt:""}),h("strong",{text:S.db?"Aún no hay cursos":"Cargando…"}),
+    S.db?(S.canWrite?h("div",{class:"stack",style:"align-items:center"},"Crea los cursos y carga sus nóminas para comenzar.",h("button",{class:"btn primary",type:"button",onclick:()=>abrirAdmin("curso")},"Crear el primer curso")):"Cuando Inspectoría cree los cursos aparecerán aquí."):null));return}
+  if(!S.cursoId||!cursoDe(S.cursoId)){m.replaceChildren(h("div",{class:"card empty"},h("img",{src:LOGO,alt:""}),h("strong",{text:"Selecciona un curso"}),"Elige un curso en la barra superior o busca a un alumno por nombre o RUT."));return}
+  if(S.alumnoId&&alumnoActual()) renderFicha(); else renderNomina();
+}
+
+function conteos(){const m={};for(const e of S.evCurso){(m[e.alumnoId]||={positiva:0,negativa:0,apoderado:0,justificacion:0,suspension:0});if(m[e.alumnoId][e.tipo]!=null)m[e.alumnoId][e.tipo]++}return m}
+function renderNomina(){
+  const c=cursoDe(S.cursoId),lista=alumnosDe(S.cursoId),cnt=conteos();
+  for(const id of [...S.sel]) if(!lista.some(a=>a.id===id)) S.sel.delete(id);
+  const head=h("div",{class:"nhead"},
+    h("div",{},h("div",{class:"label",text:"Nómina del curso"}),h("h2",{text:c.nombre}),
+      h("div",{class:"muted",text:(c.profesorJefe?"Profesor(a) jefe: "+c.profesorJefe+" · ":"")+lista.length+" alumno"+(lista.length===1?"":"s")})),
+    S.canWrite?h("div",{class:"row"},
+      h("button",{class:"btn",type:"button",onclick:()=>abrirAdmin("alumno")},"＋ Agregar alumno"),
+      h("button",{class:"btn",type:"button",onclick:()=>abrirAdmin("importar")},"Importar nómina"),
+      h("button",{class:"btn ghost",type:"button",onclick:abrirEditarCurso},"Editar curso")):null);
+  const n=S.sel.size;
+  const selbar=S.canWrite&&n?h("div",{class:"selbar"},
+    h("span",{text:n+" seleccionado"+(n===1?"":"s")}),
+    h("button",{class:"btn",type:"button",onclick:()=>abrirCambioCurso([...S.sel])},"Cambiar de curso"),
+    S.confirm==="bulk"
+      ?h("span",{class:"row"},h("button",{class:"btn danger",type:"button",onclick:eliminarSeleccion},"Eliminar "+n+" con sus registros"),h("button",{class:"btn ghost",type:"button",onclick:()=>{S.confirm=null;renderMain()}},"No"))
+      :h("button",{class:"btn danger",type:"button",onclick:()=>{S.confirm="bulk";renderMain()}},"Eliminar"),
+    h("button",{class:"btn ghost",type:"button",onclick:()=>{S.sel.clear();S.confirm=null;renderMain()}},"Quitar selección")):null;
+  let body;
+  if(!lista.length) body=h("div",{class:"empty"},h("strong",{text:"Nómina vacía"}),S.canWrite?"Agrega alumnos uno a uno o importa la lista completa desde un archivo Excel.":"Este curso aún no tiene alumnos cargados.");
+  else body=h("div",{class:"tablebox"},h("table",{class:"nom"},
+    h("thead",{},h("tr",{},
+      S.canWrite?h("th",{class:"chk"},h("input",{type:"checkbox","aria-label":"Seleccionar todos",checked:n&&n===lista.length,onchange:e=>{S.sel=e.target.checked?new Set(lista.map(a=>a.id)):new Set();S.confirm=null;renderMain()}})):null,
+      h("th",{text:"Nº"}),h("th",{text:"Alumno"}),h("th",{text:"Apoderado"}),h("th",{text:"Teléfono"}),
+      ...COUNT_TIPOS.map(t=>h("th",{class:"c "+TIPOS[t].cls,title:TIPOS[t].plural,text:TIPOS[t].plural.slice(0,1)})),
+      S.canWrite?h("th",{}):null)),
+    h("tbody",{},lista.map((a,i)=>{const k=cnt[a.id]||{};const on=S.sel.has(a.id);return h("tr",{class:on?"sel":null,onclick:()=>selectAlumno(a.id)},
+      S.canWrite?h("td",{class:"chk",onclick:e=>e.stopPropagation()},h("input",{type:"checkbox","aria-label":"Seleccionar "+a.nombre,checked:on,onchange:e=>{e.target.checked?S.sel.add(a.id):S.sel.delete(a.id);S.confirm=null;renderMain()}})):null,
+      h("td",{class:"n",text:String(i+1).padStart(2,"0")}),
+      h("td",{},h("button",{class:"nm",type:"button",text:a.nombre}),(()=>{const s=suspActiva(S.evCurso,a.id);return s?h("span",{class:"badge",title:"Hasta el "+fdate(s.hasta),text:s.desde<=hoy()?"Suspendido":"Suspensión prog."}):null})(),a.rut?h("span",{class:"rut",text:a.rut}):null),
+      h("td",{text:a.apoderado||"—"}),h("td",{class:"mono",text:a.telApoderado||"—"}),
+      ...COUNT_TIPOS.map(t=>h("td",{class:"c"},h("span",{class:"dot "+TIPOS[t].cls+(k[t]?"":" z"),text:k[t]||0}))),
+      S.canWrite?h("td",{class:"act",onclick:e=>e.stopPropagation()},h("button",{class:"btn ghost",type:"button",onclick:()=>abrirEditar(a)},"Editar")):null)}))));
+  $("main").replaceChildren(h("section",{class:"card"},head,selbar,body),
+    lista.length?h("p",{class:"hint",text:"P positivas · N negativas · A atenciones de apoderado · J justificaciones · S suspensiones. Haz clic en un alumno para abrir su hoja de vida; marca las casillas para cambiar de curso o eliminar varios a la vez."}):null);
+}
+
+function renderFicha(){
+  const a=alumnoActual(),c=cursoDe(a.cursoId),lista=alumnosDe(a.cursoId),i=lista.findIndex(x=>x.id===a.id);
+  const prev=lista[i-1],next=lista[i+1];
+  const fact=(k,v,mono)=>h("div",{},h("dt",{text:k}),h("dd",{class:mono?"mono":null,text:v||"—"}));
+  $("main").replaceChildren(
+    h("div",{class:"ftop"},
+      h("button",{class:"btn ghost",type:"button",onclick:verNomina},"← Nómina "+(c?c.nombre:"")),
+      h("div",{class:"row"},
+        h("button",{class:"btn",type:"button",disabled:!prev,onclick:()=>prev&&selectAlumno(prev.id),title:prev?prev.nombre:""},"‹ Anterior"),
+        h("span",{class:"muted mono",text:(i+1)+" / "+lista.length}),
+        h("button",{class:"btn",type:"button",disabled:!next,onclick:()=>next&&selectAlumno(next.id),title:next?next.nombre:""},"Siguiente ›"))),
+    h("section",{class:"card perfil"},
+      h("div",{class:"fotocol"},h("div",{class:"photo",id:"photo"}),
+        S.canWrite?h("div",{class:"fotobtns",id:"fotobtns"}):null),
+      h("div",{class:"pdata"},
+        h("div",{},h("div",{class:"row",style:"justify-content:space-between"},
+            h("span",{class:"chipcurso",text:c?c.nombre:""}),
+            S.canWrite?h("div",{class:"row"},
+              h("button",{class:"btn",type:"button",onclick:()=>abrirCambioCurso([a.id])},"Cambiar de curso"),
+              h("button",{class:"btn",type:"button",onclick:()=>abrirEditar(a)},"Editar datos")):null),
+          h("h2",{text:a.nombre})),
+        h("div",{id:"susBanner"}),
+        h("dl",{class:"facts"},fact("RUT",a.rut,true),fact("Profesor(a) jefe",c&&c.profesorJefe),fact("Apoderado(a)",a.apoderado),fact("Teléfono apoderado",a.telApoderado,true),fact("Correo apoderado",a.emailApoderado),fact("Dirección",a.direccion),a.obs?fact("Observaciones permanentes",a.obs):null),
+        h("div",{class:"counts",id:"counts"}),
+        S.canWrite?h("div",{class:"row"},h("button",{class:"btn gold",type:"button",onclick:()=>abrirRegistro(null,"inline")},"＋ Agregar registro de antecedentes"),
+          h("button",{class:"btn",type:"button",onclick:abrirConocimiento},"✍ Toma de conocimiento"),
+          h("button",{class:"btn sus",type:"button",onclick:()=>abrirSuspension()},"⚠ Suspensión")):null)),
+    h("section",{class:"card tl inlinereg",id:"inlineReg",hidden:true}),
+    h("section",{class:"card tl"},
+      h("div",{class:"tlbar"},h("h3",{text:"Registro de antecedentes"}),
+        h("div",{class:"row"},
+          h("select",{id:"periodo","aria-label":"Periodo",style:"width:auto",onchange:e=>{S.periodo=e.target.value;renderTimeline()}},Object.entries(PERIODOS).map(([k,v])=>h("option",{value:k,selected:S.periodo===k},v))),
+          downloads?h("button",{class:"btn",type:"button",onclick:descargar},"Descargar hoja de vida"):null,
+          S.canWrite?h("button",{class:"btn gold",type:"button",onclick:()=>abrirRegistro(null,"inline")},"＋ Agregar registro"):null)),
+      h("div",{class:"seg",id:"filtros",style:"margin-top:10px"}),
+      h("ul",{class:"tlist",id:"tlist"})));
+  renderFoto();renderCounts();renderTimeline();
+}
+function renderFoto(){
+  const box=$("photo"); if(!box)return; const a=alumnoActual(); if(!a)return;
+  if(S.foto) box.replaceChildren(h("img",{src:S.foto,alt:"Fotografía de "+a.nombre}));
+  else box.replaceChildren(h("div",{class:"ini"},iniciales(a.nombre).toUpperCase(),h("small",{text:S.foto===undefined?"Cargando…":"Sin fotografía"})));
+  const b=$("fotobtns"); if(!b)return;
+  b.replaceChildren(h("button",{class:"btn",type:"button",onclick:abrirCamara},"📷 Tomar foto"),
+    h("button",{class:"btn",type:"button",onclick:()=>$("fotoIn").click()},"Subir foto"),
+    S.foto?(S.confirm==="foto"?h("button",{class:"btn danger",type:"button",onclick:quitarFoto},"¿Quitar?"):h("button",{class:"btn ghost",type:"button",onclick:()=>{S.confirm="foto";renderFoto()}},"Quitar")):null);
+}
+function suspActiva(evs,aid){const t=hoy();return ordenEv(evs.filter(e=>e.alumnoId===aid&&e.tipo==="suspension"&&e.hasta&&e.hasta>=t))[0]||null}
+function renderBanner(){
+  const b=$("susBanner");if(!b)return;const s=suspActiva(S.evAlumno,S.alumnoId);
+  const pend=S.evAlumno.filter(e=>e.tipo==="retiro"&&!e.firmado);
+  const avisoRet=pend.length?h("div",{class:"banner",style:"margin-top:6px"},h("b",{text:"Retiro pendiente de firma"}),h("span",{text:pend.length+" carta"+(pend.length===1?"":"s")+" de retiro sin firma del apoderado. No se permiten nuevos retiros sin el apoderado titular presente, salvo con clave de autorización."})):null;
+  if(!s){b.replaceChildren(...(avisoRet?[avisoRet]:[]));return}
+  const t=hoy();const vigente=s.desde<=t;
+  b.replaceChildren(h("div",{class:"banner"},h("b",{text:vigente?"Suspendido(a)":"Suspensión programada"}),
+    h("span",{text:(vigente?"Hasta el ":"Del "+fdate(s.desde)+" al ")+fdate(s.hasta)+(s.reintegro?" · reintegro el "+fdate(s.reintegro):"")+(s.citaFecha?" · apoderado citado el "+fdate(s.citaFecha)+(s.citaHora?" "+s.citaHora+" h":""):"")})),avisoRet);
+}
+function renderCounts(){
+  renderBanner();
+  const box=$("counts"); if(!box)return; const k={positiva:0,negativa:0,apoderado:0,justificacion:0,suspension:0};let dias=0;
+  S.evAlumno.forEach(e=>{if(k[e.tipo]!=null)k[e.tipo]++;if(e.tipo==="suspension")dias+=Number(e.dias)||0});
+  box.replaceChildren(...COUNT_TIPOS.map(t=>h("div",{class:"count "+TIPOS[t].cls},h("b",{text:k[t]}),h("span",{text:TIPOS[t].plural+(t==="suspension"&&dias?" · "+dias+" día"+(dias===1?"":"s"):"")}))));
+}
+
+/* ---------- fotografía ---------- */
+async function procesarFoto(file){
+  const url=URL.createObjectURL(file);
+  try{
+    const img=new Image(); await new Promise((ok,ko)=>{img.onload=ok;img.onerror=ko;img.src=url});
+    const W=360,H=480,c=document.createElement("canvas");c.width=W;c.height=H;const ctx=c.getContext("2d");
+    const sr=img.naturalWidth/img.naturalHeight,tr=W/H;let sw,sh,sx,sy;
+    if(sr>tr){sh=img.naturalHeight;sw=sh*tr;sx=(img.naturalWidth-sw)/2;sy=0}else{sw=img.naturalWidth;sh=sw/tr;sx=0;sy=(img.naturalHeight-sh)/4}
+    ctx.fillStyle="#ffffff";ctx.fillRect(0,0,W,H);ctx.drawImage(img,sx,sy,sw,sh,0,0,W,H);
+    return c.toDataURL("image/jpeg",0.82);
+  } finally {URL.revokeObjectURL(url)}
+}
+["fotoIn","camIn"].forEach(id=>$(id).addEventListener("change",async e=>{
+  const f=e.target.files[0]; e.target.value=""; const a=alumnoActual(); if(!f||!a||!db)return;
+  let data; try{data=await procesarFoto(f)}catch(x){toast("No pude leer esa imagen. Usa una foto JPG o PNG.");return}
+  await guardarFoto(a.id,data);
+}));
+async function guardarFoto(aid,data){
+  if(S.alumnoId===aid){S.foto=data;renderFoto()}
+  return guardar(()=>db.doc("fotos/"+aid).set({img:data,actualizado:new Date().toISOString()}),"Fotografía guardada");
+}
+function abrirCamara(){
+  const a=alumnoActual(); if(!a||!db)return;
+  let stream=null;
+  const parar=()=>{if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}};
+  const video=h("video",{autoplay:true,playsinline:true,muted:true});
+  const visor=h("div",{class:"cam"},video);
+  const msg=h("p",{class:"hint",style:"text-align:center",text:"Activando la cámara… Si el navegador pregunta, permite el acceso."});
+  const acciones=h("div",{class:"row",style:"justify-content:center"});
+  const alternativa=()=>{parar();visor.replaceChildren(h("div",{class:"empty",style:"color:#fff;padding:40px 16px"},"La cámara no está disponible en esta vista."));
+    msg.textContent="Este navegador no permitió usar la cámara del computador dentro de la página. Puedes elegir una foto guardada o, en celular o tablet, abrir la cámara del equipo.";
+    acciones.replaceChildren(h("button",{class:"btn primary",type:"button",onclick:()=>{cerrarModal();$("camIn").click()}},"Abrir cámara del equipo / elegir archivo"),h("button",{class:"btn ghost",type:"button",onclick:cerrarModal},"Cancelar"))};
+  const enVivo=()=>{visor.replaceChildren(video);msg.textContent="Centra el rostro del alumno y presiona Capturar.";
+    acciones.replaceChildren(h("button",{class:"btn ghost",type:"button",onclick:cerrarModal},"Cancelar"),h("button",{class:"btn gold",type:"button","data-focus":"",onclick:capturar},"📷 Capturar"))};
+  const capturar=()=>{
+    const vw=video.videoWidth,vh=video.videoHeight; if(!vw){toast("La cámara aún no entrega imagen.");return}
+    const W=360,H=480,c=document.createElement("canvas");c.width=W;c.height=H;const ctx=c.getContext("2d");
+    const tr=W/H;let sw,sh;if(vw/vh>tr){sh=vh;sw=sh*tr}else{sw=vw;sh=sw/tr}
+    ctx.translate(W,0);ctx.scale(-1,1);ctx.drawImage(video,(vw-sw)/2,(vh-sh)/2,sw,sh,0,0,W,H);
+    const data=c.toDataURL("image/jpeg",0.85);
+    visor.replaceChildren(h("img",{src:data,alt:"Vista previa"}));msg.textContent="¿Usar esta fotografía para "+a.nombre+"?";
+    acciones.replaceChildren(h("button",{class:"btn",type:"button",onclick:enVivo},"Repetir"),h("button",{class:"btn primary",type:"button",onclick:async()=>{const id=a.id;cerrarModal();await guardarFoto(id,data)}},"Usar esta foto"));
+  };
+  alCerrar=parar;
+  abrirModal("Tomar fotografía",h("div",{class:"mbody stack"},visor,msg,acciones));
+  acciones.replaceChildren(h("button",{class:"btn ghost",type:"button",onclick:cerrarModal},"Cancelar"));
+  if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)){alternativa();return}
+  navigator.mediaDevices.getUserMedia({video:{facingMode:"user",width:{ideal:1280},height:{ideal:960}},audio:false})
+    .then(st=>{if($("ov").hidden){st.getTracks().forEach(t=>t.stop());return}stream=st;video.srcObject=st;video.play().catch(()=>{});enVivo()})
+    .catch(alternativa);
+}
+function quitarFoto(){const a=alumnoActual();if(!a)return;autorizar("Quitar la fotografía de "+a.nombre+".",()=>guardar(()=>db.doc("fotos/"+a.id).delete(),"Fotografía eliminada"))}
+
+/* ---------- registro de antecedentes ---------- */
+function filtrados(){return ordenEv(S.evAlumno.filter(e=>(S.filtro==="todos"||e.tipo===S.filtro)&&enPeriodo(e,S.periodo)))}
+function extras(e){
+  const r=[];
+  if(e.tipo==="positiva"&&e.categoria)r.push(["Ámbito",e.categoria]);
+  if(e.tipo==="negativa"&&e.medida)r.push(["Medida",e.medida]);
+  if(e.tipo==="apoderado"){if(e.asiste)r.push(["Asiste",e.asiste]);if(e.motivo)r.push(["Motivo",e.motivo]);if(e.acuerdos)r.push(["Acuerdos",e.acuerdos])}
+  if(e.tipo==="retiro"){if(e.modalidad)r.push(["Modalidad",e.modalidad]);if(e.hora)r.push(["Hora de retiro",e.hora+" h"]);if(e.retira)r.push(["Retira",e.retira+(e.rutRetira?" · RUT "+e.rutRetira:"")+(e.parentesco?" · "+e.parentesco:"")]);if(e.motivoRetiro)r.push(["Motivo",e.motivoRetiro]);if(e.medioAut)r.push(["Autorización",e.medioAut]);if(e.autorizadoConClave)r.push(["Autorización especial","Autorizado con clave de Inspectoría (había "+(e.retirosPendientesAlAutorizar||1)+" carta"+((e.retirosPendientesAlAutorizar||1)==1?"":"s")+" de retiro pendiente"+((e.retirosPendientesAlAutorizar||1)==1?"":"s")+")"])}
+  if(e.tipo==="suspension"){r.push(["Periodo",(e.dias||"?")+" día"+(e.dias==1?"":"s")+" corrido"+(e.dias==1?"":"s")+": del "+fdate(e.desde)+" al "+fdate(e.hasta)]);if(e.reintegro)r.push(["Reintegro a clases",fdate(e.reintegro)]);if(e.articulo)r.push(["Reglamento Interno",e.articulo]);if(e.medidas)r.push(["Medidas formativas",e.medidas]);
+    if(e.citaFecha)r.push(["Citación apoderado",fdate(e.citaFecha)+(e.citaHora?" a las "+e.citaHora+" h":"")+(e.citaLugar?" · "+e.citaLugar:"")+(e.citaCon?" · con "+e.citaCon:"")])}
+  if(e.tipo==="conocimiento"){if(e.periodo)r.push(["Periodo",PERIODOS[e.periodo]||e.periodo]);if(e.resumen){const x=e.resumen;r.push(["Resumen","P "+(x.positiva||0)+" · N "+(x.negativa||0)+" · A "+(x.apoderado||0)+" · J "+(x.justificacion||0)])}if(e.observaciones)r.push(["Observaciones",e.observaciones])}
+  if(e.tipo==="justificacion"){if(e.justifica)r.push(["Justifica",e.justifica+(e.desde?" · "+fdate(e.desde)+(e.hasta&&e.hasta!==e.desde?" al "+fdate(e.hasta):""):"")]);if(e.respaldo)r.push(["Respaldo",e.respaldo])}
+  return r;
+}
+function renderTimeline(){
+  const fl=$("filtros"),ul=$("tlist"); if(!ul)return;
+  fl.replaceChildren(...[["todos","Todos"],...[...ORDEN,"retiro","suspension","conocimiento"].map(t=>[t,TIPOS[t].plural])].map(([k,l])=>
+    h("button",{type:"button",class:k==="todos"?"":TIPOS[k].cls,style:k==="todos"?"--c:var(--gold)":null,"aria-pressed":String(S.filtro===k),onclick:()=>{S.filtro=k;renderTimeline()}},k==="todos"?null:h("i"),l)));
+  const list=filtrados(); ul.replaceChildren();
+  if(!list.length){ul.append(h("li",{class:"empty",style:"padding:28px 10px"},S.evAlumno.length?"No hay registros con este filtro.":h("span",{},"Sin antecedentes registrados. ",S.canWrite?h("button",{class:"btn gold",type:"button",style:"margin-left:6px",onclick:()=>abrirRegistro(null,"inline")},"＋ Agregar registro"):null)));return}
+  let mes="";const ids=new Set();
+  for(const e of list){
+    const m=(e.fecha||"").slice(0,7);
+    if(m!==mes){mes=m;ul.append(h("li",{class:"month",text:fdate(m+"-01",{month:"long",year:"numeric"})}))}
+    const T=TIPOS[e.tipo]||TIPOS.positiva; if(e.autor)ids.add(e.autor); const x=extras(e);
+    ul.append(h("li",{class:"ev "+T.cls},h("div",{class:"mk"}),h("div",{style:"min-width:0"},
+      h("div",{class:"evtop"},h("span",{class:"tag",text:T.label}),
+        e.gravedad?h("span",{class:"pill "+sinTildes(e.gravedad),text:"Falta "+e.gravedad.toLowerCase()}):null,
+        e.folio?h("span",{class:"mono muted",style:"font-size:11.5px",text:"Folio N° "+e.folio}):null,
+        h("time",{datetime:e.fecha,text:fdate(e.fecha)})),
+      h("p",{text:e.descripcion}),
+      x.length?h("dl",{class:"extra"},x.flatMap(([k,v])=>[h("dt",{text:k}),h("dd",{text:v})])):null,
+      estadoEv(e),
+      h("div",{class:"evfoot"},h("span",{},"Registró: ",h("span",{class:"autor","data-id":e.autor||"",text:e.autor?"…":"—"}),
+          e.editado?h("span",{}," · editado el "+fdate(e.editado.slice(0,10))+" por ",h("span",{class:"autor","data-id":e.editadoPor||"",text:e.editadoPor?"…":"—"})):null),
+        S.canWrite?(S.confirm==="ev:"+e.id
+          ?h("span",{class:"row"},h("button",{class:"btn danger",type:"button",onclick:()=>borrarEv(e)},"Confirmar eliminación"),h("button",{class:"btn ghost",type:"button",onclick:()=>{S.confirm=null;renderTimeline()}},"No"))
+          :h("span",{class:"row"},e.tipo!=="conocimiento"?h("button",{class:"btn ghost",type:"button",onclick:()=>e.tipo==="suspension"?abrirSuspension(e):abrirRegistro(e,"inline")},"Editar"):null,h("button",{class:"btn ghost",type:"button",onclick:()=>{S.confirm="ev:"+e.id;renderTimeline()}},"Eliminar"))):null))));
+    if(e.editadoPor)ids.add(e.editadoPor);
+  }
+  pintarAutores([...ids]);
+}
+async function nombres(ids){if(!user||!ids.length)return{};try{const ps=await user.profiles(ids);const o={};for(const id of ids)o[id]=(ps[id]&&ps[id].name)||"Usuario";return o}catch(e){return{}}}
+async function pintarAutores(ids){const n=await nombres(ids);document.querySelectorAll(".autor").forEach(el=>{if(el.dataset.id)el.textContent=n[el.dataset.id]||"Usuario"})}
+function borrarEv(e){autorizar("Eliminar el registro “"+(TIPOS[e.tipo]||{}).label+"” del "+fdate(e.fecha)+".",()=>guardar(async()=>{await db.doc("eventos/"+e.id).delete();await db.doc("firmas/"+e.id).delete()},"Registro eliminado"))}
+
+/* área de texto con límite y contador */
+function areaCont(id,val,rows,max){
+  max=max||350;const ta=h("textarea",{id,rows:String(rows||4),maxlength:String(max)},(val||"").slice(0,max));
+  const ct=h("small",{class:"muted",style:"align-self:flex-end;font-family:var(--f-mono)"});
+  const upd=()=>{ct.textContent=ta.value.length+" / "+max+" caracteres";ct.style.color=ta.value.length>=max?"var(--neg)":""};
+  ta.addEventListener("input",upd);upd();
+  return h("div",{class:"field",style:"gap:2px"},ta,ct);
+}
+
+/* ---------- folio correlativo por año ---------- */
+async function siguienteFolio(){
+  const y=hoy().slice(0,4);const ref=db.doc("contadores/folio-"+y);const holder=(S.uid||"anon")+"-"+Math.random().toString(36).slice(2);
+  for(let i=0;i<25;i++){
+    const r=await ref.acquire({holder,ttlMs:6000});
+    if(r&&r.acquired){const snap=await ref.get();const n=((snap.exists&&Number(snap.data().n))||0)+1;
+      await ref.set({n,anio:y,actualizado:new Date().toISOString()});return y+"-"+String(n).padStart(5,"0")}
+    await new Promise(ok=>setTimeout(ok,250+Math.random()*300));
+  }
+  throw new Error("folio");
+}
+async function asegurarFolio(ev){
+  if(ev.folio)return ev.folio;
+  try{const f=await siguienteFolio();ev.folio=f;if(ev.id)await db.doc("eventos/"+ev.id).update({folio:f})}catch(x){}
+  return ev.folio||"";
+}
+async function folioSuelto(){try{return await siguienteFolio()}catch(x){return ""}}
+
+/* ---------- autorización de eliminaciones ---------- */
+const CLAVE_HASH="a440271cecec7a0c14582539fbc0d3fbf544425fdac9ab943c05640d35304e08";
+async function sha256(t){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}
+function autorizar(texto,fn){
+  S.confirm=null;
+  abrirModal("Autorizar eliminación",h("form",{class:"mbody stack",onsubmit:async e=>{
+      e.preventDefault(); const inp=$("clave"); let ok=false;
+      try{ok=(await sha256(inp.value.trim().toUpperCase()))===CLAVE_HASH}catch(x){}
+      if(!ok){$("claveMsg").textContent="Clave incorrecta. No se eliminó nada.";inp.select();return}
+      cerrarModal(); await fn();
+    }},
+    h("p",{style:"margin:0",text:texto}),
+    h("p",{class:"hint",text:"Esta acción no se puede deshacer. Ingresa la clave de autorización de Inspectoría General para continuar."}),
+    fld("Clave de autorización",h("input",{type:"password",id:"clave",autocomplete:"off","data-focus":""})),
+    h("p",{class:"hint",id:"claveMsg",role:"alert",style:"color:var(--neg);min-height:1em"}),
+    h("div",{class:"row",style:"justify-content:flex-end"},h("button",{class:"btn ghost",type:"button",onclick:()=>{cerrarModal();renderMain()}},"Cancelar"),h("button",{class:"btn danger",type:"submit"},"Eliminar"))));
+}
+
+/* ---------- ventanas ---------- */
+let alCerrar=null;
+function abrirModal(titulo,...contenido){
+  $("modal").replaceChildren(h("div",{class:"mhead"},h("h3",{id:"mtitle",text:titulo}),h("button",{class:"btn ghost",type:"button","aria-label":"Cerrar",onclick:cerrarModal},"✕")),...contenido);
+  $("ov").hidden=false; document.body.style.overflow="hidden";
+  setTimeout(()=>{const f=$("modal").querySelector("[data-focus]")||$("modal").querySelector("input,select,textarea");if(f)f.focus()},30);
+}
+function cerrarModal(){$("ov").hidden=true;document.body.style.overflow="";if(alCerrar){const f=alCerrar;alCerrar=null;f()}}
+$("ov").addEventListener("mousedown",e=>{if(e.target===$("ov"))cerrarModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("ov").hidden)cerrarModal()});
+const fld=(lab,el)=>h("label",{class:"field"},h("span",{text:lab}),el);
+const sel=(id,opts,val)=>h("select",{id},opts.map(o=>Array.isArray(o)?h("option",{value:o[0],selected:o[0]===val},o[1]):h("option",{value:o,selected:o===val},o)));
+const inp=(id,val,type,ph)=>h("input",{type:type||"text",id,value:val||"",placeholder:ph||""});
+
+/* ingresar registro */
+function inlineAbierto(){const b=$("inlineReg");return !!(b&&!b.hidden)}
+function cerrarInline(){const b=$("inlineReg");if(b){b.hidden=true;b.replaceChildren()}}
+function abrirRegistro(ev,modo){
+  const inline=modo==="inline"&&!!$("inlineReg");
+  const ed=ev&&ev.id?ev:null; if(ed&&TIPOS[ed.tipo])S.tipo=ed.tipo;
+  const alEd=ed&&S.alumnos.find(a=>a.id===ed.alumnoId);
+  const cid=(alEd&&alEd.cursoId)||S.cursoId||(cursosOrd()[0]||{}).id;
+  const selC=sel("rCurso",cursosOrd().map(c=>[c.id,c.nombre]),cid);
+  const selA=h("select",{id:"rAlumno",required:true});
+  const fillA=(keep)=>{const l=alumnosDe(selC.value);selA.replaceChildren(h("option",{value:""},l.length?"Selecciona alumno":"Curso sin alumnos"),...l.map((a,i)=>h("option",{value:a.id,selected:a.id===keep},(i+1)+". "+a.nombre)))};
+  fillA(ed?ed.alumnoId:S.alumnoId); selC.onchange=()=>fillA(null);
+  const tipoBox=h("div",{class:"tipobox"});
+  const seg=h("div",{class:"seg"});
+  const pintarTipo=()=>{
+    const t=S.tipo; tipoBox.className="tipobox "+TIPOS[t].cls;
+    seg.replaceChildren(...FORM_TIPOS.map(k=>h("button",{type:"button",class:TIPOS[k].cls,"aria-pressed":String(k===t),onclick:()=>{S.tipo=k;pintarTipo()}},h("i"),k==="retiro"?"Retiro dentro de la jornada":TIPOS[k].label)));
+    const desc=$("xDesc")?$("xDesc").value:"";
+    const al=S.alumnos.find(a=>a.id===selA.value);
+    let ex=[];
+    if(t==="positiva")ex=[fld("Ámbito",sel("xCat",["Responsabilidad","Rendimiento académico","Convivencia y respeto","Participación","Solidaridad","Otro"]))];
+    if(t==="negativa")ex=[h("div",{class:"grid2"},fld("Tipo de falta (Reglamento Interno)",sel("xGrav",["Leve","Grave","Gravísima"])),fld("Medida aplicada",inp("xMedida","","text","Diálogo formativo, citación, etc.")))];
+    if(t==="apoderado")ex=[h("div",{class:"grid2"},fld("Asiste",inp("xAsiste",al&&al.apoderado)),fld("Motivo",sel("xMotivo",["Citación de Inspectoría","Citación de profesor jefe","Solicitud del apoderado","Entrega de información","Seguimiento de caso","Otro"]))),
+      fld("Acuerdos y compromisos",areaCont("xAcuerdos","",2))];
+    if(t==="justificacion")ex=[h("div",{class:"grid2"},fld("Se justifica",sel("xJust",["Inasistencia","Atraso","Retiro anticipado"])),fld("Respaldo",sel("xRespaldo",["Certificado médico","Presencial del apoderado","Comunicación escrita","Otro documento"])),
+      fld("Desde",inp("xDesde",hoy(),"date")),fld("Hasta",inp("xHasta",hoy(),"date")))];
+    if(t==="retiro"){
+      const modal=sel("xModal",["Presencial: apoderado(a) titular","Presencial: persona autorizada por el apoderado","No presencial: autorizado por el apoderado titular"]);
+      const medio=fld("Medio de autorización del apoderado",sel("xMedio",["Llamada telefónica","Correo electrónico","Comunicación escrita","Mensaje registrado"]));
+      const retira=inp("xRetira",al&&al.apoderado);
+      const pend=al?retirosPendientes(al.id,ed&&ed.id):[];
+      const bloqueo=h("div",{class:"banner",hidden:true},h("b",{text:"Carta de retiro pendiente"}),
+        h("span",{text:"Este alumno tiene "+pend.length+" carta"+(pend.length===1?"":"s")+" de retiro sin firma del apoderado ("+pend.map(e=>fdate(e.fecha)).join(", ")+"). Solo puede retirarlo el apoderado titular en forma presencial, o con la clave de autorización."}),
+        h("label",{class:"field",style:"flex:1 1 220px"},h("span",{text:"Clave de autorización"}),h("input",{type:"password",id:"xClaveRet",autocomplete:"off"})));
+      const sync=()=>{const tit=modal.selectedIndex===0,nopres=modal.selectedIndex===2;medio.hidden=!nopres;bloqueo.hidden=!(pend.length&&!tit);if(tit&&al&&!retira.value)retira.value=al.apoderado||"";if(!tit&&al&&retira.value===al.apoderado)retira.value=""};
+      modal.addEventListener("change",sync);
+      ex=[h("div",{class:"grid2"},fld("Modalidad",modal),fld("Hora de retiro",inp("xHora",new Date().toTimeString().slice(0,5),"time")),
+        fld("Nombre de quien retira",retira),fld("RUT de quien retira",inp("xRutRet","","text","Opcional")),
+        fld("Parentesco o relación",inp("xParent","","text","Madre, padre, abuela…")),fld("Motivo",sel("xMotRet",["Salud","Hora médica o dental","Trámite familiar","Emergencia familiar","Otro"]))),medio,bloqueo];
+      setTimeout(sync,0);
+    }
+    tipoBox.replaceChildren(...ex,fld(TIPOS[t].desc+" (máximo 350 caracteres)",areaCont("xDesc",desc,4)));
+    const b=$("xBtn"); if(b)b.textContent=ed?"Guardar cambios":"Registrar "+TIPOS[t].label.toLowerCase();
+  };
+  selA.addEventListener("change",()=>{if(S.tipo==="retiro"){pintarTipo();return}const x=$("xAsiste");const al=S.alumnos.find(a=>a.id===selA.value);if(x&&!x.value&&al)x.value=al.apoderado||""});
+  const form=h("form",{class:inline?"stack":"mbody stack",onsubmit:async e=>{
+    e.preventDefault(); const aid=selA.value; const a=S.alumnos.find(x=>x.id===aid);
+    if(!a){toast("Selecciona un alumno.");selA.focus();return}
+    const v=id=>{const el=$(id);return el?el.value.trim():""}; const t=S.tipo; const d=v("xDesc"); if(!d){$("xDesc").focus();return}
+    const ev={alumnoId:a.id,cursoId:a.cursoId,tipo:t,fecha:v("xFecha")||hoy(),descripcion:d,autor:S.uid||"",creado:new Date().toISOString()};
+    if(t==="positiva")ev.categoria=v("xCat");
+    if(t==="negativa"){ev.gravedad=v("xGrav");ev.medida=v("xMedida")}
+    if(t==="apoderado"){ev.asiste=v("xAsiste");ev.motivo=v("xMotivo");ev.acuerdos=v("xAcuerdos")}
+    if(t==="justificacion"){ev.justifica=v("xJust");ev.respaldo=v("xRespaldo");ev.desde=v("xDesde");ev.hasta=v("xHasta")}
+    if(t==="retiro"){ev.modalidad=v("xModal");ev.hora=v("xHora");ev.retira=v("xRetira");ev.rutRetira=v("xRutRet");ev.parentesco=v("xParent");ev.motivoRetiro=v("xMotRet");if(/^No presencial/.test(ev.modalidad))ev.medioAut=v("xMedio");
+      const pend=retirosPendientes(a.id,ed&&ed.id);
+      if(pend.length&&!TITULAR_PRES.test(ev.modalidad)){
+        const cl=$("xClaveRet");let ok=false;try{ok=cl&&(await sha256(cl.value.trim().toUpperCase()))===CLAVE_HASH}catch(x){}
+        if(!ok){toast("El alumno tiene una carta de retiro pendiente de firma. Solo puede retirarlo el apoderado titular en forma presencial, o ingresa la clave de autorización correcta.");if(cl){cl.focus();cl.select()}return}
+        ev.autorizadoConClave=true;ev.retirosPendientesAlAutorizar=pend.length;
+      }}
+    const avisar=!!($("xMail")&&$("xMail").checked);
+    $("xBtn").disabled=true;
+    const ref=ed?db.doc("eventos/"+ed.id):db.collection("eventos").doc();
+    const keep={}; if(ed)["firmado","firmaNombre","firmaFecha","firmaPapel","avisoEnviado","avisoA","folio"].forEach(k=>{if(ed[k]!=null)keep[k]=ed[k]});
+    if(!ed){try{ev.folio=await siguienteFolio()}catch(x){}}
+    const ok=await guardar(()=>ed?ref.set({...ev,...keep,autor:ed.autor||"",creado:ed.creado||ev.creado,editado:new Date().toISOString(),editadoPor:S.uid||""}):ref.set(ev),ed?"Registro actualizado":TIPOS[t].label+" registrada para "+a.nombre);
+    if(ok){
+      if(inline)cerrarInline();else{cerrarModal(); if(S.alumnoId!==a.id)selectAlumno(a.id)}
+      if(!ed){
+        const evF={id:ref.id,...ev};
+        const imprimir=FIRMABLES.includes(t);let pdf=null;
+        if(imprimir||avisar){try{pdf=await generarPDF(evF,null,{descargar:imprimir})}catch(x){if(imprimir)toast("No se pudo generar el PDF.")}}
+        if(avisar)enviarAviso(evF,pdf);
+      }
+    } else $("xBtn").disabled=false;
+  }},
+    inline?h("div",{hidden:true},selC,selA):h("div",{class:"grid2"},fld("Curso",selC),fld("Alumno",selA)),
+    h("div",{class:"grid2"},fld("Fecha",inp("xFecha",ed?ed.fecha:hoy(),"date")),h("div")),
+    h("div",{class:"field"},h("span",{text:"Tipo de registro"}),seg),
+    tipoBox,
+    ed?null:h("label",{class:"chkrow"},h("input",{type:"checkbox",id:"xMail",checked:true}),h("span",{},"Avisar por correo al apoderado titular",h("br"),h("small",{class:"muted",text:"En atenciones de apoderado, justificaciones y retiros se descarga el PDF para imprimir y firmar en papel; el aviso lleva una copia adjunta."}))),
+    h("div",{class:"row",style:"justify-content:flex-end"},h("button",{class:"btn ghost",type:"button",onclick:()=>inline?cerrarInline():cerrarModal()},"Cancelar"),h("button",{class:"btn primary",type:"submit",id:"xBtn"},"Registrar")));
+  if(inline){
+    const box=$("inlineReg"); const al=S.alumnos.find(a=>a.id===selA.value);
+    box.replaceChildren(h("div",{class:"tlbar"},h("h3",{text:ed?"Editar registro":"Agregar registro de antecedentes"}),h("span",{class:"muted",text:al?al.nombre:""})),form);
+    box.hidden=false; box.scrollIntoView({behavior:"smooth",block:"start"});
+  } else { cerrarInline(); abrirModal(ed?"Editar registro":"Ingresar registro",form); }
+  pintarTipo();
+  if(ed){
+    const setv=(id,val)=>{const el=$(id);if(!el||val==null||val==="")return;if(el.tagName==="SELECT"&&![...el.options].some(o=>o.value===val))el.append(h("option",{value:val},val));el.value=val;el.dispatchEvent(new Event("change"));el.dispatchEvent(new Event("input"))};
+    [["xCat",ed.categoria],["xGrav",ed.gravedad],["xMedida",ed.medida],["xAsiste",ed.asiste],["xMotivo",ed.motivo],["xAcuerdos",ed.acuerdos],["xJust",ed.justifica],["xRespaldo",ed.respaldo],["xDesde",ed.desde],["xHasta",ed.hasta],["xModal",ed.modalidad],["xHora",ed.hora],["xRetira",ed.retira],["xRutRet",ed.rutRetira],["xParent",ed.parentesco],["xMotRet",ed.motivoRetiro],["xMedio",ed.medioAut],["xDesc",ed.descripcion]].forEach(([i,v])=>setv(i,v));
+  }
+  if(!selA.value)selA.setAttribute("data-focus","");else setTimeout(()=>{const d=$("xDesc");if(d)d.focus({preventScroll:inline})},inline?350:0);
+}
+
+/* editar alumno */
+async function moverAlumno(aid,cid){
+  await db.doc("alumnos/"+aid).update({cursoId:cid});
+  const evs=await db.collection("eventos").where("alumnoId","==",aid).get();
+  for(const d of evs.docs) if(d.data().cursoId!==cid) await db.doc("eventos/"+d.id).update({cursoId:cid});
+}
+async function eliminarAlumnoDatos(aid){
+  const evs=await db.collection("eventos").where("alumnoId","==",aid).get();
+  for(const d of evs.docs){await db.doc("eventos/"+d.id).delete();await db.doc("firmas/"+d.id).delete()}
+  await db.doc("fotos/"+aid).delete(); await db.doc("alumnos/"+aid).delete();
+}
+function abrirEditar(a){
+  a=a||alumnoActual(); if(!a)return; let confirmar=false;
+  const pie=h("div",{class:"row"});
+  const pintarPie=()=>pie.replaceChildren(
+    confirmar?h("span",{class:"row"},h("span",{class:"muted",text:"Se borrarán también su foto y registros."}),h("button",{class:"btn danger",type:"button",onclick:()=>autorizar("Eliminar a "+a.nombre+" con su foto y todos sus registros.",async()=>{const ok=await guardar(()=>eliminarAlumnoDatos(a.id),"Alumno eliminado");if(ok&&S.alumnoId===a.id)verNomina();else renderMain()})},"Eliminar definitivamente"),h("button",{class:"btn ghost",type:"button",onclick:()=>{confirmar=false;pintarPie()}},"No"))
+      :h("button",{class:"btn danger",type:"button",onclick:()=>{confirmar=true;pintarPie()}},"Eliminar alumno"),
+    h("span",{style:"flex:1"}),h("button",{class:"btn ghost",type:"button",onclick:cerrarModal},"Cancelar"),h("button",{class:"btn primary",type:"submit"},"Guardar cambios"));
+  pintarPie();
+  abrirModal("Datos del alumno",h("form",{class:"mbody stack",onsubmit:async e=>{
+    e.preventDefault(); const v=id=>$(id).value.trim(); const nuevoCurso=$("eCurso").value;
+    const data={nombre:v("eNombre")||a.nombre,rut:v("eRut"),apoderado:v("eApo"),telApoderado:v("eTel"),emailApoderado:v("eMail"),direccion:v("eDir"),obs:v("eObs")};
+    const mueve=nuevoCurso!==a.cursoId;
+    const ok=await guardar(async()=>{await db.doc("alumnos/"+a.id).update(data);if(mueve)await moverAlumno(a.id,nuevoCurso)},mueve?"Datos guardados y alumno trasladado a "+(cursoDe(nuevoCurso)||{}).nombre:"Datos actualizados");
+    if(ok){cerrarModal();if(mueve&&S.alumnoId===a.id)selectAlumno(a.id)}
+  }},
+    fld("Nombre completo (apellidos, nombres)",inp("eNombre",a.nombre)),
+    h("div",{class:"grid2"},fld("RUT",inp("eRut",a.rut,"text","21.345.678-9")),fld("Curso",sel("eCurso",cursosOrd().map(c=>[c.id,c.nombre]),a.cursoId)),
+      fld("Apoderado(a)",inp("eApo",a.apoderado)),fld("Teléfono apoderado",inp("eTel",a.telApoderado,"tel","+56 9 ...")),
+      fld("Correo apoderado",inp("eMail",a.emailApoderado,"email")),fld("Dirección",inp("eDir",a.direccion))),
+    fld("Observaciones permanentes (salud, PIE, convivencia, etc.)",h("textarea",{id:"eObs",rows:"3"},a.obs||"")),
+    pie));
+}
+function abrirCambioCurso(ids){
+  const als=ids.map(id=>S.alumnos.find(a=>a.id===id)).filter(Boolean); if(!als.length)return;
+  const origen=als[0].cursoId; const destinos=cursosOrd().filter(c=>c.id!==origen);
+  if(!destinos.length){toast("Primero crea el curso de destino en “Cursos y alumnos”.");return}
+  abrirModal("Cambiar de curso",h("form",{class:"mbody stack",onsubmit:async e=>{
+      e.preventDefault(); const cid=$("mvCurso").value; const btn=$("mvBtn"); btn.disabled=true; let n=0;
+      for(const a of als){ try{await moverAlumno(a.id,cid);n++;btn.textContent="Moviendo… "+n+"/"+als.length}catch(x){} }
+      const dest=(cursoDe(cid)||{}).nombre;
+      if(n===als.length){toast((n===1?als[0].nombre+" trasladado":n+" alumnos trasladados")+" a "+dest);cerrarModal();S.sel.clear();S.confirm=null;
+        if(S.alumnoId&&ids.includes(S.alumnoId))selectAlumno(S.alumnoId);else renderMain()}
+      else{btn.disabled=false;btn.textContent="Mover";toast("Se trasladaron "+n+" de "+als.length+". Revisa la conexión e intenta de nuevo.")}
+    }},
+    h("p",{style:"margin:0"},als.length===1?h("span",{},"Trasladar a ",h("b",{text:als[0].nombre})," desde "+((cursoDe(origen)||{}).nombre||"")+"."):h("span",{},"Trasladar ",h("b",{text:als.length+" alumnos"})," desde "+((cursoDe(origen)||{}).nombre||"")+".")),
+    fld("Curso de destino",sel("mvCurso",destinos.map(c=>[c.id,c.nombre]))),
+    h("p",{class:"hint",text:"Su ficha, foto y todos sus registros se mueven con el alumno."}),
+    h("div",{class:"row",style:"justify-content:flex-end"},h("button",{class:"btn ghost",type:"button",onclick:cerrarModal},"Cancelar"),h("button",{class:"btn primary",type:"submit",id:"mvBtn"},"Mover"))));
+}
+function eliminarSeleccion(){const ids=[...S.sel];autorizar("Eliminar "+ids.length+" alumno"+(ids.length===1?"":"s")+" con su foto y todos sus registros.",()=>eliminarSeleccionOk(ids))}
+async function eliminarSeleccionOk(ids){
+  S.confirm=null; let n=0;
+  for(const id of ids){try{await eliminarAlumnoDatos(id);n++}catch(e){}}
+  S.sel.clear(); toast(n===ids.length?n+" alumno"+(n===1?"":"s")+" eliminado"+(n===1?"":"s"):"Se eliminaron "+n+" de "+ids.length+". Revisa la conexión."); renderMain();
+}
+function abrirEditarCurso(){
+  const c=cursoDe(S.cursoId); if(!c)return; const nAl=alumnosDe(c.id).length; let confirmar=false;
+  const pie=h("div",{class:"row"});
+  const pintarPie=()=>pie.replaceChildren(
+    nAl?h("span",{class:"hint",text:"Para eliminar el curso, primero traslada o elimina sus "+nAl+" alumnos."})
+      :(confirmar?h("span",{class:"row"},h("button",{class:"btn danger",type:"button",onclick:()=>autorizar("Eliminar el curso "+c.nombre+".",async()=>{const ok=await guardar(()=>db.doc("cursos/"+c.id).delete(),"Curso eliminado");if(ok){S.cursoId=null;if(unsubCurso){unsubCurso();unsubCurso=null}renderAll()}})},"Eliminar curso definitivamente"),h("button",{class:"btn ghost",type:"button",onclick:()=>{confirmar=false;pintarPie()}},"No"))
+        :h("button",{class:"btn danger",type:"button",onclick:()=>{confirmar=true;pintarPie()}},"Eliminar curso")),
+    h("span",{style:"flex:1"}),h("button",{class:"btn ghost",type:"button",onclick:cerrarModal},"Cancelar"),h("button",{class:"btn primary",type:"submit"},"Guardar cambios"));
+  pintarPie();
+  abrirModal("Editar curso",h("form",{class:"mbody stack",onsubmit:async e=>{
+    e.preventDefault(); const nombre=$("ecNombre").value.trim()||c.nombre;
+    const ok=await guardar(()=>db.doc("cursos/"+c.id).update({nombre,profesorJefe:$("ecProfe").value.trim()}),"Curso actualizado");
+    if(ok)cerrarModal();
+  }},h("div",{class:"grid2"},fld("Curso",inp("ecNombre",c.nombre)),fld("Profesor(a) jefe",inp("ecProfe",c.profesorJefe))),pie));
+}
+
+/* cursos y alumnos */
+function abrirAdmin(tab){
+  const tabs=[["curso","Nuevo curso"],["alumno","Nuevo alumno"],["importar","Importar nómina"]];
+  const body=h("div",{});
+  const tabBar=h("div",{class:"tabs",role:"tablist"});
+  const ir=t=>{
+    tabBar.replaceChildren(...tabs.map(([k,l])=>h("button",{type:"button",role:"tab","aria-selected":String(k===t),disabled:k!=="curso"&&!S.cursos.length,onclick:()=>ir(k)},l)));
+    const cid=S.cursoId||(cursosOrd()[0]||{}).id;
+    if(t==="curso") body.replaceChildren(h("form",{class:"mbody stack",onsubmit:async e=>{
+        e.preventDefault(); const nombre=$("cNombre").value.trim(); if(!nombre)return;
+        const ref=db.collection("cursos").doc();
+        const ok=await guardar(()=>ref.set({nombre,profesorJefe:$("cProfe").value.trim(),creado:new Date().toISOString()}),"Curso "+nombre+" creado");
+        if(ok){S.cursoId=null;selectCurso(ref.id);ir("importar")}
+      }},h("div",{class:"grid2"},fld("Curso",inp("cNombre","","text","3° Medio B")),fld("Profesor(a) jefe",inp("cProfe","","text","Nombre y apellido"))),
+      h("div",{class:"row",style:"justify-content:flex-end"},h("button",{class:"btn primary",type:"submit"},"Crear curso"))));
+    if(t==="alumno") body.replaceChildren(h("form",{class:"mbody stack",onsubmit:async e=>{
+        e.preventDefault(); const v=id=>$(id).value.trim(); const nombre=v("aNombre"); if(!nombre)return;
+        const ok=await guardar(()=>db.collection("alumnos").doc().set({cursoId:$("aCurso").value,nombre,rut:v("aRut"),apoderado:v("aApo"),telApoderado:v("aTel"),emailApoderado:v("aMail"),direccion:"",obs:"",creado:new Date().toISOString()}),nombre+" agregado");
+        if(ok){["aNombre","aRut","aApo","aTel","aMail"].forEach(i=>$(i).value="");$("aNombre").focus()}
+      }},fld("Curso",sel("aCurso",cursosOrd().map(c=>[c.id,c.nombre]),cid)),
+      fld("Nombre completo (apellidos, nombres)",inp("aNombre")),
+      h("div",{class:"grid2"},fld("RUT",inp("aRut","","text","21.345.678-9")),fld("Apoderado(a)",inp("aApo")),fld("Teléfono apoderado",inp("aTel","","tel","+56 9 ...")),fld("Correo apoderado",inp("aMail","","email"))),
+      h("p",{class:"hint",text:"La fotografía se agrega desde la hoja de vida del alumno."}),
+      h("div",{class:"row",style:"justify-content:flex-end"},h("button",{class:"btn primary",type:"submit"},"Agregar alumno"))));
+    if(t==="importar") body.replaceChildren(h("form",{class:"mbody stack",onsubmit:async e=>{
+        e.preventDefault(); const cursoId=$("iCurso").value;
+        const filas=$("iText").value.split(/\r?\n/).map(l=>l.trim()).filter(Boolean).map(l=>l.split(l.includes("\t")?"\t":";").map(x=>x.trim())).filter(c=>c[0]&&!/^nombre/i.test(c[0]));
+        if(!filas.length){toast("No encontré filas para importar.");return}
+        const btn=$("iBtn");btn.disabled=true;let n=0;
+        for(let i=0;i<filas.length;i+=10){
+          const r=await Promise.all(filas.slice(i,i+10).map(c=>db.collection("alumnos").doc().set({cursoId,nombre:c[0],rut:c[1]||"",apoderado:c[2]||"",telApoderado:c[3]||"",emailApoderado:c[4]||"",direccion:"",obs:"",creado:new Date().toISOString()}).then(()=>1,()=>0)));
+          n+=r.reduce((a,b)=>a+b,0);btn.textContent="Importando… "+n+"/"+filas.length;
+        }
+        btn.disabled=false;btn.textContent="Importar";
+        if(n===filas.length){toast(n+" alumnos importados");cerrarModal();S.cursoId=null;selectCurso(cursoId)}
+        else toast("Se importaron "+n+" de "+filas.length+". Revisa la conexión e intenta con las filas faltantes.");
+      }},fld("Curso",sel("iCurso",cursosOrd().map(c=>[c.id,c.nombre]),cid)),
+      h("div",{class:"filebox"},h("button",{class:"btn primary",type:"button",onclick:()=>$("iFile").click()},"Elegir archivo Excel o CSV"),
+        h("span",{class:"hint",id:"iFileName",text:"Se leerá la primera hoja. Si tiene encabezados (Nombre, RUT, Apoderado, Teléfono, Correo) se reconocen solos."}),
+        h("input",{type:"file",id:"iFile",accept:".xlsx,.xls,.csv,.ods",hidden:true,onchange:e=>leerArchivo(e.target)})),
+      h("p",{class:"hint",text:"También puedes pegar desde Excel una fila por alumno, columnas en este orden: Nombre · RUT · Apoderado · Teléfono · Correo (o separadas con punto y coma). Revisa la lista antes de importar; solo el nombre es obligatorio."}),
+      h("textarea",{id:"iText",rows:"9","data-focus":"",placeholder:"ARAYA SOTO, Benjamín Andrés\t22.111.222-3\tCarolina Soto\t+56 9 1234 5678"}),
+      h("div",{class:"row",style:"justify-content:flex-end"},h("button",{class:"btn primary",type:"submit",id:"iBtn"},"Importar"))));
+    setTimeout(()=>{const f=body.querySelector("[data-focus]")||body.querySelector("input:not([type=hidden]),textarea");if(f)f.focus()},20);
+  };
+  abrirModal("Cursos y alumnos",tabBar,body);
+  ir(tab==="curso"||!S.cursos.length?"curso":tab);
+}
+function borrarCurso(c){autorizar("Eliminar el curso "+c.nombre+".",()=>borrarCursoOk(c))}
+async function borrarCursoOk(c){S.confirm=null;const ok=await guardar(()=>db.doc("cursos/"+c.id).delete(),"Curso eliminado");if(ok){S.cursoId=null;if(unsubCurso){unsubCurso();unsubCurso=null}renderAll()}}
+
+function cargarXLSX(){
+  if(window.XLSX)return Promise.resolve();
+  return new Promise((ok,ko)=>{const sc=document.createElement("script");sc.src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js";sc.onload=ok;sc.onerror=ko;document.head.append(sc)});
+}
+async function leerArchivo(input){
+  const f=input.files[0]; input.value=""; if(!f)return;
+  $("iFileName").textContent="Leyendo "+f.name+"…";
+  try{
+    await cargarXLSX();
+    const wb=XLSX.read(await f.arrayBuffer(),{type:"array"});
+    const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,raw:false,defval:""}).map(r=>r.map(x=>String(x).trim())).filter(r=>r.some(Boolean));
+    if(!rows.length){$("iFileName").textContent="El archivo no tiene filas.";return}
+    let map=[0,1,2,3,4],start=0;
+    const hi=rows.slice(0,5).findIndex(r=>r.some(x=>/nombre|alumno|estudiante/i.test(x)));
+    if(hi>=0){
+      const hdr=rows[hi].map(sinTildes); const find=re=>hdr.findIndex(x=>re.test(x));
+      const iNom=find(/nombre|alumno|estudiante/),iApe=find(/apellido/);
+      map=[iNom,find(/rut|run/),find(/apoderad/),find(/fono|telef|celular|movil/),find(/correo|mail/)];
+      start=hi+1;
+      if(iApe>=0&&iApe!==iNom){map.ape=iApe}
+    }
+    const lineas=rows.slice(start).map(r=>{
+      let nom=map[0]>=0?r[map[0]]:""; if(map.ape!=null&&r[map.ape]) nom=r[map.ape]+", "+nom;
+      return [nom,...map.slice(1).map(i=>i>=0?(r[i]||""):"")].map(x=>x.replace(/[\t\r\n]+/g," ")).join("\t");
+    }).filter(l=>l.split("\t")[0].replace(/,\s*$/,"").trim());
+    $("iText").value=lineas.join("\n");
+    $("iFileName").textContent=f.name+": "+lineas.length+" alumnos listos. Revisa y presiona Importar.";
+  }catch(e){$("iFileName").textContent="No pude leer el archivo. Prueba guardarlo como .xlsx o .csv, o pega las filas abajo."}
+}
+
+/* ---------- firma, PDF y aviso por correo ---------- */
+function cargarScript(src,glob){
+  if(window[glob])return Promise.resolve();
+  return new Promise((ok,ko)=>{const sc=document.createElement("script");sc.src=src;sc.onload=ok;sc.onerror=ko;document.head.append(sc)});
+}
+let _logoPng=null;
+async function logoPNG(){
+  if(_logoPng)return _logoPng;
+  const img=new Image();await new Promise((ok,ko)=>{img.onload=ok;img.onerror=ko;img.src=LOGO});
+  const c=document.createElement("canvas");c.width=img.naturalWidth;c.height=img.naturalHeight;c.getContext("2d").drawImage(img,0,0);
+  return _logoPng=c.toDataURL("image/png");
+}
+function crearPad(){
+  const cv=h("canvas",{class:"pad","aria-label":"Recuadro de firma"});let ctx=null,dib=false,vacio=true,last=null;
+  const ajustar=()=>{const r=cv.getBoundingClientRect();const dpr=window.devicePixelRatio||1;cv.width=Math.max(1,Math.round(r.width*dpr));cv.height=Math.max(1,Math.round(r.height*dpr));
+    ctx=cv.getContext("2d");ctx.setTransform(dpr,0,0,dpr,0,0);ctx.lineWidth=2.4;ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle="#0b1766";ctx.fillStyle="#0b1766";vacio=true};
+  const pos=e=>{const r=cv.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]};
+  cv.addEventListener("pointerdown",e=>{if(!ctx)ajustar();e.preventDefault();try{cv.setPointerCapture(e.pointerId)}catch(x){}dib=true;last=pos(e);ctx.beginPath();ctx.arc(last[0],last[1],1.2,0,Math.PI*2);ctx.fill();vacio=false});
+  cv.addEventListener("pointermove",e=>{if(!dib)return;const p=pos(e);ctx.beginPath();ctx.moveTo(last[0],last[1]);ctx.lineTo(p[0],p[1]);ctx.stroke();last=p});
+  const fin=()=>{dib=false};cv.addEventListener("pointerup",fin);cv.addEventListener("pointercancel",fin);
+  return{el:cv,ajustar,limpiar:ajustar,vacio:()=>vacio,png:()=>{const o=document.createElement("canvas");const k=Math.min(1,700/cv.width);o.width=Math.round(cv.width*k);o.height=Math.round(cv.height*k);o.getContext("2d").drawImage(cv,0,0,o.width,o.height);return o.toDataURL("image/png")}};
+}
+async function getFirma(id){try{const s=await db.doc("firmas/"+id).get();return s.exists?s.data():null}catch(e){return null}}
+function slug(t){return sinTildes(t||"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,50)}
+async function construirPDF(ev,firma){
+  await cargarScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js","jspdf");
+  const {jsPDF}=window.jspdf; const d=new jsPDF({unit:"mm",format:"a4"});
+  const a=S.alumnos.find(x=>x.id===ev.alumnoId)||{}; const c=cursoDe(a.cursoId)||cursoDe(ev.cursoId)||{};
+  const nm=await nombres([ev.autor].filter(Boolean)); const autor=nm[ev.autor]||"";
+  const PW=210,PH=297,M=18,W=PW-2*M; let y=14;
+  const ink=()=>d.setTextColor(18,26,58),gris=()=>d.setTextColor(89,96,122);
+  const nueva=()=>{d.addPage();y=20}; const ensure=hh=>{if(y+hh>PH-20)nueva()};
+  const largo={day:"numeric",month:"long",year:"numeric"};
+  try{d.addImage(await logoPNG(),"PNG",M,y,15,20.4)}catch(x){}
+  d.setFont("helvetica","bold");d.setFontSize(10.5);ink();d.text("INSTITUTO COMERCIAL ALBERTO VALENZUELA LLANOS",M+19,y+7);
+  d.setFont("helvetica","normal");d.setFontSize(8.5);gris();d.text("Inspectoría General · Avda. Manso de Velasco 389, San Fernando",M+19,y+12.5);
+  d.setFont("helvetica","bold");d.setFontSize(10);d.setTextColor(11,23,102);d.text("Folio N° "+(ev.folio||"s/n"),PW-M,y+7,{align:"right"});d.setFont("helvetica","normal");d.setFontSize(8.5);gris();
+  y+=25;d.setDrawColor(240,196,25);d.setLineWidth(1.2);d.line(M,y,PW-M,y);y+=11;
+  d.setFont("helvetica","bold");d.setFontSize(15);d.setTextColor(11,23,102);d.text((TITULOS[ev.tipo]||"Registro").toUpperCase(),M,y);y+=9;
+  const datos=[["Alumno(a)",a.nombre],["RUT",a.rut],["Curso",c.nombre],["Profesor(a) jefe",c.profesorJefe],["Apoderado(a) titular",a.apoderado],["Fecha",fdate(ev.fecha,largo)],["Registrado por",autor]];
+  const colW=W/2;
+  for(let i=0;i<datos.length;i+=2){ensure(12);for(let j=0;j<2&&i+j<datos.length;j++){const[k,v]=datos[i+j];const x=M+j*colW;d.setFont("helvetica","normal");d.setFontSize(7.5);gris();d.text(k.toUpperCase(),x,y);d.setFontSize(10.5);ink();d.text(d.splitTextToSize(v||"—",colW-4)[0],x,y+5)}y+=12}
+  d.setDrawColor(213,217,230);d.setLineWidth(.3);d.line(M,y,PW-M,y);y+=8;
+  const parrafo=(label,txt)=>{if(!txt)return;ensure(12);d.setFont("helvetica","bold");d.setFontSize(8.5);gris();d.text(label.toUpperCase(),M,y);y+=5;d.setFont("helvetica","normal");d.setFontSize(10.5);ink();
+    for(const l of d.splitTextToSize(String(txt),W)){ensure(6);d.text(l,M,y);y+=5.2}y+=3};
+  if(ev.tipo==="conocimiento"){
+    parrafo("Periodo revisado",PERIODOS[ev.periodo]||ev.periodo);
+    const r=ev.resumen||{};parrafo("Resumen",`Anotaciones positivas: ${r.positiva||0}   ·   Anotaciones negativas: ${r.negativa||0}   ·   Atenciones de apoderado: ${r.apoderado||0}   ·   Justificaciones: ${r.justificacion||0}`);
+    const list=ordenEv(S.evAlumno.filter(x=>x.alumnoId===ev.alumnoId&&x.tipo!=="conocimiento"&&enPeriodo(x,ev.periodo)));
+    ensure(18);d.setFont("helvetica","bold");d.setFontSize(8.5);gris();d.text("REGISTROS DEL PERIODO",M,y);y+=3;
+    const cx=[M+1,M+25,M+63],wDet=W-63;
+    const head=()=>{d.setFillColor(245,246,250);d.rect(M,y,W,7,"F");d.setFont("helvetica","bold");d.setFontSize(7.5);gris();d.text("FECHA",cx[0],y+4.8);d.text("TIPO",cx[1],y+4.8);d.text("DETALLE",cx[2],y+4.8);y+=11};
+    head();
+    if(!list.length){d.setFont("helvetica","normal");d.setFontSize(10);ink();d.text("Sin registros en el periodo.",M+1,y);y+=8}
+    for(const x of list){d.setFont("helvetica","normal");d.setFontSize(9.3);
+      const det=d.splitTextToSize((x.descripcion||"")+(x.gravedad?" (falta "+x.gravedad.toLowerCase()+")":""),wDet);const tp=d.splitTextToSize(TIPOS[x.tipo].label,36);
+      const hh=Math.max(det.length,tp.length)*4.4+3;if(y+hh>PH-22){nueva();head();d.setFont("helvetica","normal");d.setFontSize(9.3)}
+      ink();d.text(fdate(x.fecha),cx[0],y);d.text(tp,cx[1],y);d.text(det,cx[2],y);y+=hh;d.setDrawColor(230,232,240);d.line(M,y-3,PW-M,y-3)}
+    y+=3;parrafo("Observaciones",ev.observaciones);
+  } else {
+    for(const[k,v] of extras(ev))parrafo(k,v);
+    if(ev.gravedad)parrafo("Tipo de falta (Reglamento Interno)",ev.gravedad);
+    parrafo(TIPOS[ev.tipo].desc,ev.descripcion);
+  }
+  if(DECLARA[ev.tipo]){ensure(14);d.setFont("helvetica","italic");d.setFontSize(9.5);ink();for(const l of d.splitTextToSize(DECLARA[ev.tipo],W)){ensure(6);d.text(l,M,y);y+=4.8}y+=2}
+  ensure(56);y+=6;const bw=W/2-10,fy=y+26;
+  if(firma&&firma.img){try{d.addImage(firma.img,"PNG",M+4,y,bw-8,24)}catch(x){}}
+  d.setDrawColor(18,26,58);d.setLineWidth(.4);d.line(M,fy,M+bw,fy);d.line(PW-M-bw,fy,PW-M,fy);
+  d.setFont("helvetica","bold");d.setFontSize(9.5);ink();
+  d.text(FIRMABLES.includes(ev.tipo)?"Firma apoderado(a)":"Toma de conocimiento apoderado(a)",M+bw/2,fy+5,{align:"center"});const insp=inspectorDe(c.nombre);d.text(insp.nombre||"Inspector(a) General",PW-M-bw/2,fy+5,{align:"center"});
+  d.setFont("helvetica","normal");d.setFontSize(8.5);gris();d.text(insp.cargo,PW-M-bw/2,fy+10,{align:"center"});
+  if(firma){let yy=fy+10;d.text(firma.nombre||"",M+bw/2,yy,{align:"center"});if(firma.rut){yy+=4.5;d.text("RUT "+firma.rut,M+bw/2,yy,{align:"center"})}yy+=4.5;
+    d.text("Firmado el "+new Date(firma.fecha).toLocaleString("es-CL",{dateStyle:"long",timeStyle:"short"}),M+bw/2,yy,{align:"center"})}
+  else{d.text("Nombre: ______________________________",M+bw/2,fy+11,{align:"center"});d.text("RUT: __________________  Fecha: ___/___/____",M+bw/2,fy+17,{align:"center"})}
+  const n=d.getNumberOfPages();const gen=new Date().toLocaleString("es-CL",{dateStyle:"long",timeStyle:"short"});
+  for(let i=1;i<=n;i++){d.setPage(i);d.setFont("helvetica","normal");d.setFontSize(7.5);gris();d.text("Hoja de Vida del Estudiante · Documento generado el "+gen,M,PH-10);d.text("Página "+i+" de "+n,PW-M,PH-10,{align:"right"})}
+  return d;
+}
+async function generarPDF(ev,firma,{descargar=true}={}){
+  await asegurarFolio(ev);
+  const d=ev.tipo==="suspension"?await construirCarta(ev,firma):await construirPDF(ev,firma);const a=S.alumnos.find(x=>x.id===ev.alumnoId)||{};
+  const nombre=(ev.folio?"folio-"+ev.folio+"-":"")+slug(TITULOS[ev.tipo]||"registro")+"-"+slug(a.nombre)+".pdf";
+  if(descargar){if(downloads){try{await downloads.save({filename:nombre,data:d.output("arraybuffer")})}catch(e){if(!e||e.code!=="declined")toast("No se pudo descargar el PDF.")}}else toast("La descarga no está disponible en esta vista.")}
+  return{b64:d.output("datauristring").split(",").pop(),nombre};
+}
+async function descargarPDFEv(e){toast("Generando PDF…");try{await generarPDF(e,null)}catch(x){toast("No se pudo generar el PDF.")}}
+async function enviarConPdf(e){let pdf=null;try{pdf=await generarPDF(e,null,{descargar:false})}catch(x){}await enviarAviso(e,pdf)}
+async function enviarAviso(ev,pdf){
+  const a=S.alumnos.find(x=>x.id===ev.alumnoId);const to=((a&&a.emailApoderado)||"").trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)){toast("El alumno no tiene un correo de apoderado válido. Agrégalo en “Editar datos”.");return false}
+  if(!mcp){toast("El envío de correos no está disponible en esta vista.");return false}
+  const c=cursoDe(a.cursoId)||{};const T=TIPOS[ev.tipo];
+  const filas=[...(ev.folio?[["Folio N°",ev.folio]]:[]),["Alumno(a)",a.nombre],["Curso",c.nombre||""],["Fecha",fdate(ev.fecha,{day:"numeric",month:"long",year:"numeric"})],["Tipo de registro",T.label+(ev.gravedad?" (falta "+ev.gravedad.toLowerCase()+")":"")],...extras(ev)];
+  if(ev.tipo!=="conocimiento")filas.push([T.desc,ev.descripcion||""]);
+
+  const html=`<div style="font-family:Arial,Helvetica,sans-serif;color:#121a3a;max-width:620px"><div style="background:#0b1766;color:#ffffff;padding:14px 18px;border-bottom:4px solid #f0c419"><b style="font-size:15px">Instituto Comercial Alberto Valenzuela Llanos</b><br><span style="font-size:12px">Inspectoría General · San Fernando</span></div><div style="padding:16px 18px;font-size:14px;line-height:1.5"><p>Estimado(a) ${esc(a.apoderado||"apoderado(a)")}:</p><p>${ev.tipo==="suspension"?"Por medio del presente, Inspectoría General le notifica la medida de suspensión aplicada a su pupilo(a) y lo cita a presentarse en el establecimiento en la fecha indicada:":"Le informamos que se ingresó el siguiente registro en la hoja de vida de su pupilo(a):"}</p><table style="border-collapse:collapse;width:100%;font-size:14px">${filas.map(([k,v])=>`<tr><td style="padding:6px 8px;border-bottom:1px solid #d5d9e6;color:#59607a;width:160px;vertical-align:top">${esc(k)}</td><td style="padding:6px 8px;border-bottom:1px solid #d5d9e6">${esc(v).replace(/\n/g,"<br>")}</td></tr>`).join("")}</table>${pdf?"<p>Se adjunta el documento en PDF.</p>":""}<p>Ante cualquier consulta, puede comunicarse con Inspectoría General al teléfono (72) 2847263.</p><p>Atentamente,<br><b>${esc(inspectorDe(c.nombre).nombre)}</b><br>${esc(inspectorDe(c.nombre).cargo)}<br>Instituto Comercial Alberto Valenzuela Llanos</p></div></div>`;
+  const body=`Estimado(a) ${a.apoderado||"apoderado(a)"}:\n\nLe informamos que se ingresó el siguiente registro en la hoja de vida de su pupilo(a):\n\n`+filas.map(([k,v])=>k+": "+v).join("\n")+(pdf?"\n\nSe adjunta el documento en PDF.":"")+"\n\nAtentamente,\n"+inspectorDe(c.nombre).nombre+"\n"+inspectorDe(c.nombre).cargo+"\nInstituto Comercial Alberto Valenzuela Llanos";
+  const input={to:[to],subject:ev.tipo==="suspension"?`Notificación de suspensión y citación: ${a.nombre}${c.nombre?" ("+c.nombre+")":""}`:`Hoja de vida: ${T.label} de ${a.nombre}${c.nombre?" ("+c.nombre+")":""}`,htmlBody:html,body,includeSignature:true};
+  if(pdf&&pdf.b64)input.attachments=[{content:pdf.b64,filename:pdf.nombre,mimeType:"application/pdf"}];
+  toast("Enviando aviso a "+to+"…");
+  try{
+    await mcp.callTool("Gmail","send_message",input);
+    try{await db.doc("eventos/"+ev.id).update({avisoEnviado:new Date().toISOString(),avisoA:to})}catch(x){}
+    toast("Aviso enviado a "+to);return true;
+  }catch(e){
+    const code=e&&e.code;
+    toast(code==="server_not_connected"||code==="needs_reauth"?"Para enviar avisos, conecta tu Gmail en claude.ai y vuelve a intentarlo con “Enviar aviso”."
+      :code==="approval_required"||code==="not_granted"||code==="declined"?"El envío del correo no fue autorizado. Puedes reintentarlo con “Enviar aviso”."
+      :"No se pudo enviar el aviso. Reintenta con “Enviar aviso” en el registro.");
+    return false;
+  }
+}
+function estadoEv(e){
+  const firmable=FIRMABLES.includes(e.tipo);const al=S.alumnos.find(x=>x.id===e.alumnoId)||{};const mail=(al.emailApoderado||"").trim();
+  return h("div",{},
+    h("div",{class:"estado"},
+      firmable?h("span",{class:"st "+(e.firmado?"ok":"warn"),text:e.firmado?"Firma en papel recibida"+(e.firmaFecha?" el "+fdate(e.firmaFecha.slice(0,10)):""):"Pendiente de firma en papel"}):null,
+      h("span",{class:"st"+(e.avisoEnviado?" ok":""),text:e.avisoEnviado?"Aviso por correo enviado el "+fdate(e.avisoEnviado.slice(0,10)):(mail?"Aviso por correo no enviado":"Sin correo de apoderado")})),
+    h("div",{class:"evacts"},
+      downloads?h("button",{class:"btn sm",type:"button",onclick:()=>descargarPDFEv(e)},firmable?"Descargar PDF para firma":"PDF"):null,
+      S.canWrite&&firmable?h("button",{class:"btn sm"+(e.firmado?" ghost":""),type:"button",onclick:()=>marcarFirma(e)},e.firmado?"Quitar marca de firma":"✓ Marcar firma recibida"):null,
+      S.canWrite&&mail?h("button",{class:"btn sm",type:"button",onclick:()=>enviarConPdf(e)},e.avisoEnviado?"Reenviar aviso":"Enviar aviso"):null));
+}
+async function marcarFirma(e){
+  await guardar(()=>db.doc("eventos/"+e.id).update(e.firmado?{firmado:false,firmaFecha:null,firmaPapel:false}:{firmado:true,firmaPapel:true,firmaFecha:new Date().toISOString()}),e.firmado?"Marca de firma quitada":"Firma en papel registrada");
+}
+function abrirFirma(ev,{enviar=true,nuevo=false}={}){
+  const a=S.alumnos.find(x=>x.id===ev.alumnoId)||{};const pad=crearPad();const mail=(a.emailApoderado||"").trim();
+  const chk=h("input",{type:"checkbox",id:"fMail",checked:!!mail&&enviar,disabled:!mail});
+  const btn=h("button",{class:"btn primary",type:"submit"},"Firmar y generar PDF");
+  abrirModal("Firma del apoderado",h("form",{class:"mbody stack",onsubmit:async e=>{
+      e.preventDefault();if(pad.vacio()){toast("Falta la firma del apoderado en el recuadro.");return}
+      const firma={img:pad.png(),nombre:$("fNombre").value.trim()||a.apoderado||"",rut:$("fRut").value.trim(),fecha:new Date().toISOString(),registradoPor:S.uid||""};
+      btn.disabled=true;btn.textContent="Guardando firma…";
+      const ok=await guardar(async()=>{await db.doc("firmas/"+ev.id).set(firma);await db.doc("eventos/"+ev.id).update({firmado:true,firmaNombre:firma.nombre,firmaFecha:firma.fecha})},"Firma registrada");
+      if(!ok){btn.disabled=false;btn.textContent="Firmar y generar PDF";return}
+      const env=chk.checked;cerrarModal();
+      const evF={...ev,firmado:true,firmaNombre:firma.nombre,firmaFecha:firma.fecha};
+      let pdf=null;try{pdf=await generarPDF(evF,firma)}catch(x){toast("No se pudo generar el PDF.")}
+      if(env)await enviarAviso(evF,pdf);
+    }},
+    h("div",{class:"firmares"},h("b",{text:(TIPOS[ev.tipo]||{}).label+" · "+fdate(ev.fecha)}),a.nombre+" · "+((cursoDe(a.cursoId)||{}).nombre||""),
+      ev.descripcion?h("div",{class:"muted",style:"margin-top:4px",text:ev.descripcion.length>180?ev.descripcion.slice(0,180)+"…":ev.descripcion}):null),
+    h("div",{class:"grid2"},fld("Nombre de quien firma",inp("fNombre",ev.asiste||a.apoderado)),fld("RUT de quien firma",inp("fRut","","text","Opcional"))),
+    h("div",{class:"field"},h("span",{text:"Firma del apoderado (con el dedo, lápiz o mouse)"}),pad.el,
+      h("div",{class:"row",style:"justify-content:space-between"},h("span",{class:"hint",text:DECLARA[ev.tipo]||""}),h("button",{class:"btn ghost sm",type:"button",onclick:pad.limpiar},"Borrar firma"))),
+    h("label",{class:"chkrow"},chk,h("span",{text:mail?"Enviar el PDF firmado por correo a "+mail:"El alumno no tiene correo de apoderado registrado"})),
+    h("div",{class:"row",style:"justify-content:flex-end"},
+      h("button",{class:"btn ghost",type:"button",onclick:async()=>{const env=chk.checked;cerrarModal();if(nuevo&&env){let pdf=null;try{pdf=await generarPDF(ev,null,{descargar:false})}catch(x){}enviarAviso(ev,pdf)}}},nuevo?"Firmar más tarde":"Cancelar"),btn)));
+  setTimeout(pad.ajustar,80);
+}
+function abrirConocimiento(){
+  const a=alumnoActual();if(!a)return;const mail=(a.emailApoderado||"").trim();
+  const resumenDe=p=>{const r={positiva:0,negativa:0,apoderado:0,justificacion:0,suspension:0};S.evAlumno.forEach(e=>{if(r[e.tipo]!=null&&enPeriodo(e,p))r[e.tipo]++});return r};
+  const prev=h("div",{class:"firmares"});
+  const selP=sel("kPeriodo",Object.entries(PERIODOS),S.periodo);
+  const pintar=()=>{const r=resumenDe(selP.value);prev.replaceChildren(h("b",{text:a.nombre}),"Positivas "+r.positiva+" · Negativas "+r.negativa+" · Atenciones "+r.apoderado+" · Justificaciones "+r.justificacion+" · Suspensiones "+r.suspension)};
+  selP.onchange=pintar;pintar();
+  const chk=h("input",{type:"checkbox",checked:!!mail,disabled:!mail});
+  const btn=h("button",{class:"btn primary",type:"submit"},"Registrar y descargar PDF");
+  abrirModal("Toma de conocimiento",h("form",{class:"mbody stack",onsubmit:async e=>{
+      e.preventDefault();const p=selP.value;
+      const ev={alumnoId:a.id,cursoId:a.cursoId,tipo:"conocimiento",fecha:hoy(),periodo:p,resumen:resumenDe(p),descripcion:"Toma de conocimiento de la hoja de vida · "+PERIODOS[p],observaciones:$("kObs").value.trim(),
+        autor:S.uid||"",creado:new Date().toISOString()};
+      const ref=db.collection("eventos").doc();btn.disabled=true;btn.textContent="Guardando…";
+      try{ev.folio=await siguienteFolio()}catch(x){}
+      const ok=await guardar(()=>ref.set(ev),"Toma de conocimiento registrada");
+      if(!ok){btn.disabled=false;btn.textContent="Registrar y descargar PDF";return}
+      const env=chk.checked;cerrarModal();const evF={id:ref.id,...ev};
+      let pdf=null;try{pdf=await generarPDF(evF,null)}catch(x){toast("No se pudo generar el PDF.")}
+      if(env)await enviarAviso(evF,pdf);
+    }},
+    h("p",{class:"hint",text:"Se genera un PDF con todos los registros del periodo para que el apoderado lo revise y firme en papel. Luego marca la firma como recibida en el registro."}),
+    h("div",{class:"grid2"},fld("Periodo revisado",selP),h("div")),prev,
+    fld("Observaciones (opcional, máximo 350 caracteres)",areaCont("kObs","",2)),
+    h("label",{class:"chkrow"},chk,h("span",{text:mail?"Enviar copia del PDF por correo a "+mail:"El alumno no tiene correo de apoderado registrado"})),
+    h("div",{class:"row",style:"justify-content:flex-end"},h("button",{class:"btn ghost",type:"button",onclick:cerrarModal},"Cancelar"),btn)));
+}
+
+/* ---------- informe de suspensiones ---------- */
+function nivelDe(n){const t=(n||"").trim();return t.replace(/\s*[-–]?\s*[A-Za-z]$/,"").trim()||t||"Sin curso"}
+function estadoSusp(e){const t=hoy();return e.desde>t?"Programada":(e.hasta>=t?"Vigente":"Cumplida")}
+function datosInforme(){
+  const p=S.infPeriodo;const list=ordenEv(S.susp.filter(e=>enPeriodo(e,p)));
+  const alumno=id=>S.alumnos.find(a=>a.id===id);
+  const cursoId=e=>{const a=alumno(e.alumnoId);return (a&&a.cursoId)||e.cursoId};
+  const tot={n:list.length,alumnos:new Set(list.map(e=>e.alumnoId)).size,dias:list.reduce((s,e)=>s+(Number(e.dias)||0),0),
+    vigentes:list.filter(e=>estadoSusp(e)==="Vigente").length,gravisimas:list.filter(e=>sinTildes(e.gravedad)==="gravisima").length,matricula:S.alumnos.length};
+  const porCurso=cursosOrd().map(c=>{const l=list.filter(e=>cursoId(e)===c.id);return{c,nivel:nivelDe(c.nombre),mat:alumnosDe(c.id).length,n:l.length,al:new Set(l.map(e=>e.alumnoId)).size,dias:l.reduce((s,e)=>s+(Number(e.dias)||0),0)}});
+  const niv={};for(const x of porCurso){const k=x.nivel;(niv[k]||={nivel:k,cursos:0,mat:0,n:0,al:0,dias:0});niv[k].cursos++;niv[k].mat+=x.mat;niv[k].n+=x.n;niv[k].al+=x.al;niv[k].dias+=x.dias}
+  const porNivel=Object.values(niv).sort((a,b)=>coll.compare(a.nivel,b.nivel));
+  const det=list.map(e=>{const a=alumno(e.alumnoId);const c=cursoDe(cursoId(e));return{e,nombre:a?a.nombre:"Alumno eliminado",curso:c?c.nombre:"—",aid:a&&a.id}});
+  return{tot,porCurso,porNivel,det};
+}
+const pct=(a,b)=>b?Math.round(a*1000/b)/10+"%":"—";
+function renderInforme(){
+  const D=datosInforme();const T=D.tot;
+  const maxC=Math.max(1,...D.porCurso.map(x=>x.n)),maxN=Math.max(1,...D.porNivel.map(x=>x.n));
+  const bar=(v,m)=>h("div",{class:"barbox",title:v},h("i",{style:"width:"+(v/m*100)+"%"}));
+  const th=(t,num)=>h("th",{class:num?"num":null,text:t});
+  $("main").replaceChildren(
+    h("div",{class:"ftop"},h("button",{class:"btn ghost",type:"button",onclick:()=>{S.informe=false;renderAll()}},"← Volver"),
+      h("div",{class:"row"},h("label",{class:"row",style:"gap:6px"},h("span",{class:"label",text:"Periodo"}),
+        h("select",{id:"infPer",style:"width:auto",onchange:e=>{S.infPeriodo=e.target.value;renderInforme()}},Object.entries(PERIODOS).map(([k,v])=>h("option",{value:k,selected:S.infPeriodo===k},v)))),
+        downloads?h("button",{class:"btn primary",type:"button",onclick:informePDF},"Descargar informe PDF"):null)),
+    h("section",{class:"card"},h("div",{class:"nhead"},h("div",{},h("div",{class:"label",text:"Informe general · "+PERIODOS[S.infPeriodo]}),h("h2",{text:"Suspensiones"}),
+      h("div",{class:"muted",text:"Días corridos, sin contar el día en que se aplicó la medida."})))),
+    h("div",{class:"kpis"},
+      h("div",{class:"kpi hl"},h("b",{text:T.n}),h("span",{text:"Suspensiones"})),
+      h("div",{class:"kpi"},h("b",{text:T.alumnos}),h("span",{text:"Alumnos suspendidos · "+pct(T.alumnos,T.matricula)+" de la matrícula"})),
+      h("div",{class:"kpi"},h("b",{text:T.dias}),h("span",{text:"Días de suspensión"})),
+      h("div",{class:"kpi"},h("b",{text:T.n?(Math.round(T.dias/T.n*10)/10):0}),h("span",{text:"Días promedio por suspensión"})),
+      h("div",{class:"kpi"},h("b",{text:T.vigentes}),h("span",{text:"Vigentes hoy"})),
+      h("div",{class:"kpi"},h("b",{text:T.gravisimas}),h("span",{text:"Por faltas gravísimas"}))),
+    h("section",{class:"card"},h("div",{class:"secth"},h("h3",{text:"Por nivel"})),
+      h("div",{class:"tablebox"},h("table",{class:"nom inf"},h("thead",{},h("tr",{},th("Nivel"),th("Cursos",1),th("Matrícula",1),th("Suspensiones",1),th("Alumnos",1),th("% matrícula",1),th("Días",1),th(""))),
+        h("tbody",{},D.porNivel.map(x=>h("tr",{},h("td",{text:x.nivel}),h("td",{class:"num",text:x.cursos}),h("td",{class:"num",text:x.mat}),h("td",{class:"num",text:x.n}),h("td",{class:"num",text:x.al}),h("td",{class:"num",text:pct(x.al,x.mat)}),h("td",{class:"num",text:x.dias}),h("td",{},bar(x.n,maxN)))))))),
+    h("section",{class:"card"},h("div",{class:"secth"},h("h3",{text:"Por curso"})),
+      h("div",{class:"tablebox"},h("table",{class:"nom inf"},h("thead",{},h("tr",{},th("Curso"),th("Profesor(a) jefe"),th("Matrícula",1),th("Suspensiones",1),th("Alumnos",1),th("% matrícula",1),th("Días",1),th(""))),
+        h("tbody",{},D.porCurso.map(x=>h("tr",{},h("td",{},h("button",{class:"nm",type:"button",onclick:()=>selectCurso(x.c.id),text:x.c.nombre})),h("td",{text:x.c.profesorJefe||"—"}),h("td",{class:"num",text:x.mat}),h("td",{class:"num",text:x.n}),h("td",{class:"num",text:x.al}),h("td",{class:"num",text:pct(x.al,x.mat)}),h("td",{class:"num",text:x.dias}),h("td",{},bar(x.n,maxC)))))))),
+    h("section",{class:"card"},h("div",{class:"secth"},h("h3",{text:"Detalle de suspensiones"}),h("span",{class:"muted",text:D.det.length+" en el periodo"})),
+      D.det.length?h("div",{class:"tablebox"},h("table",{class:"nom inf"},h("thead",{},h("tr",{},th("Fecha medida"),th("Alumno"),th("Curso"),th("Días",1),th("Periodo"),th("Reintegro"),th("Falta"),th("Estado"))),
+        h("tbody",{},D.det.map(({e,nombre,curso,aid})=>{const st=estadoSusp(e);return h("tr",{},h("td",{class:"mono",text:fdate(e.fechaSuspension||e.fecha)}),
+          h("td",{},aid?h("button",{class:"nm",type:"button",onclick:()=>selectAlumno(aid),text:nombre}):nombre),h("td",{text:curso}),h("td",{class:"num",text:e.dias||""}),
+          h("td",{class:"mono",text:fdate(e.desde)+" – "+fdate(e.hasta)}),h("td",{class:"mono",text:fdate(e.reintegro)}),h("td",{text:e.gravedad||""}),
+          h("td",{},h("span",{class:"st"+(st==="Vigente"?" warn":st==="Cumplida"?"":" ok"),text:st})))})))):h("div",{class:"empty",text:"No hay suspensiones registradas en este periodo."})));
+}
+async function informePDF(){
+  if(!downloads)return;toast("Generando informe…");
+  try{
+    await cargarScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js","jspdf");
+    const {jsPDF}=window.jspdf;const d=new jsPDF({unit:"mm",format:"a4"});const D=datosInforme(),T=D.tot;
+    const PW=210,PH=297,M=16,W=PW-2*M;let y=14;
+    const ink=()=>d.setTextColor(18,26,58),gris=()=>d.setTextColor(89,96,122);
+    try{d.addImage(await logoPNG(),"PNG",M,y,13,17.7)}catch(x){}
+    d.setFont("helvetica","bold");d.setFontSize(10.5);ink();d.text("INSTITUTO COMERCIAL ALBERTO VALENZUELA LLANOS",M+17,y+6);
+    d.setFont("helvetica","normal");d.setFontSize(8.5);gris();d.text("Inspectoría General · San Fernando",M+17,y+11);
+    const folio=await folioSuelto();d.setFont("helvetica","bold");d.setFontSize(10);d.setTextColor(11,23,102);d.text("Folio N° "+(folio||"s/n"),PW-M,y+6,{align:"right"});
+    y+=22;d.setDrawColor(240,196,25);d.setLineWidth(1.2);d.line(M,y,PW-M,y);y+=10;
+    d.setFont("helvetica","bold");d.setFontSize(15);d.setTextColor(11,23,102);d.text("INFORME DE SUSPENSIONES",M,y);
+    d.setFont("helvetica","normal");d.setFontSize(9.5);gris();d.text(PERIODOS[S.infPeriodo]+" · al "+fdate(hoy(),{day:"numeric",month:"long",year:"numeric"}),PW-M,y,{align:"right"});y+=8;
+    const k=[["Suspensiones",T.n],["Alumnos suspendidos",T.alumnos+" ("+pct(T.alumnos,T.matricula)+")"],["Días de suspensión",T.dias],["Vigentes hoy",T.vigentes],["Faltas gravísimas",T.gravisimas]];
+    const kw=W/k.length;k.forEach(([l,v],i)=>{const x=M+i*kw;d.setFillColor(245,246,250);d.rect(x+0.5,y,kw-1,16,"F");d.setFont("helvetica","bold");d.setFontSize(13);ink();d.text(String(v),x+3,y+7);d.setFont("helvetica","normal");d.setFontSize(7.5);gris();d.text(l,x+3,y+12.5)});
+    y+=24;
+    const tabla=(titulo,cols,rows)=>{
+      if(y>PH-40){d.addPage();y=18}
+      d.setFont("helvetica","bold");d.setFontSize(10);d.setTextColor(11,23,102);d.text(titulo.toUpperCase(),M,y);y+=4;
+      const head=()=>{d.setFillColor(11,23,102);d.rect(M,y,W,6.5,"F");d.setFont("helvetica","bold");d.setFontSize(7.5);d.setTextColor(255,255,255);let x=M;cols.forEach(c=>{d.text(c[0],c[2]?x+c[1]-2:x+2,y+4.5,c[2]?{align:"right"}:{});x+=c[1]});y+=6.5};
+      head();d.setFont("helvetica","normal");d.setFontSize(8.5);
+      if(!rows.length){ink();d.text("Sin datos.",M+2,y+5);y+=8}
+      rows.forEach((r,i)=>{if(y>PH-18){d.addPage();y=18;head();d.setFont("helvetica","normal");d.setFontSize(8.5)}
+        if(i%2){d.setFillColor(247,248,251);d.rect(M,y,W,6,"F")}ink();let x=M;cols.forEach((c,j)=>{const t=d.splitTextToSize(String(r[j]??""),c[1]-3)[0]||"";d.text(t,c[2]?x+c[1]-2:x+2,y+4.2,c[2]?{align:"right"}:{});x+=c[1]});y+=6});
+      y+=8;
+    };
+    tabla("Por nivel",[["Nivel",56],["Cursos",18,1],["Matrícula",22,1],["Suspensiones",26,1],["Alumnos",20,1],["% matrícula",22,1],["Días",14,1]],D.porNivel.map(x=>[x.nivel,x.cursos,x.mat,x.n,x.al,pct(x.al,x.mat),x.dias]));
+    tabla("Por curso",[["Curso",34],["Profesor(a) jefe",44],["Matrícula",18,1],["Suspens.",20,1],["Alumnos",18,1],["% matr.",22,1],["Días",22,1]],D.porCurso.map(x=>[x.c.nombre,x.c.profesorJefe||"—",x.mat,x.n,x.al,pct(x.al,x.mat),x.dias]));
+    tabla("Detalle",[["Fecha",20],["Alumno",52],["Curso",24],["Días",10,1],["Periodo",40],["Reintegro",18],["Estado",14]],D.det.map(({e,nombre,curso})=>[fdate(e.fechaSuspension||e.fecha),nombre,curso,e.dias||"",fdate(e.desde)+" – "+fdate(e.hasta),fdate(e.reintegro),estadoSusp(e)]));
+    const n=d.getNumberOfPages();for(let i=1;i<=n;i++){d.setPage(i);d.setFont("helvetica","normal");d.setFontSize(7.5);gris();d.text("Hoja de Vida del Estudiante · Informe de suspensiones",M,PH-10);d.text("Página "+i+" de "+n,PW-M,PH-10,{align:"right"})}
+    await downloads.save({filename:"informe-suspensiones-"+S.infPeriodo+"-"+hoy()+".pdf",data:d.output("arraybuffer")});
+  }catch(e){if(!e||e.code!=="declined")toast("No se pudo generar el informe.")}
+}
+
+/* ---------- informe de retiros ---------- */
+const esTitular=e=>/titular/i.test(e.modalidad||"");
+const esNoPres=e=>/^No presencial/i.test(e.modalidad||"");
+function datosRetiros(){
+  const alumno=id=>S.alumnos.find(a=>a.id===id);
+  const cursoId=e=>{const a=alumno(e.alumnoId);return(a&&a.cursoId)||e.cursoId};
+  let list=S.retiros.filter(e=>enPeriodo(e,S.retPeriodo));
+  if(S.retCurso)list=list.filter(e=>cursoId(e)===S.retCurso);
+  if(S.retJust==="si")list=list.filter(esTitular);else if(S.retJust==="no")list=list.filter(e=>!esTitular(e));
+  list=[...list].sort((a,b)=>(b.fecha||"").localeCompare(a.fecha||"")||(b.hora||"").localeCompare(a.hora||""));
+  const tot={n:list.length,alumnos:new Set(list.map(e=>e.alumnoId)).size,titular:list.filter(esTitular).length,
+    presTit:list.filter(e=>esTitular(e)&&!esNoPres(e)).length,noPres:list.filter(esNoPres).length,autorizado:list.filter(e=>!esTitular(e)).length,
+    firmados:list.filter(e=>e.firmado).length,pendientes:list.filter(e=>!e.firmado).length};
+  const cursos=S.retCurso?[cursoDe(S.retCurso)].filter(Boolean):cursosOrd();
+  const porCurso=cursos.map(c=>{const l=list.filter(e=>cursoId(e)===c.id);return{c,n:l.length,al:new Set(l.map(e=>e.alumnoId)).size,presTit:l.filter(e=>esTitular(e)&&!esNoPres(e)).length,noPres:l.filter(esNoPres).length,aut:l.filter(e=>!esTitular(e)).length,pend:l.filter(e=>!e.firmado).length}});
+  const mot={};list.forEach(e=>{const k=e.motivoRetiro||"Sin motivo";mot[k]=(mot[k]||0)+1});
+  const porMotivo=Object.entries(mot).sort((a,b)=>b[1]-a[1]);
+  const det=list.map(e=>{const a=alumno(e.alumnoId);const c=cursoDe(cursoId(e));return{e,nombre:a?a.nombre:"Alumno eliminado",curso:c?c.nombre:"—",aid:a&&a.id}});
+  return{tot,porCurso,porMotivo,det};
+}
+function renderRetiros(){
+  const D=datosRetiros(),T=D.tot;const th=(t,num)=>h("th",{class:num?"num":null,text:t});
+  const maxM=Math.max(1,...D.porMotivo.map(x=>x[1]));
+  $("main").replaceChildren(
+    h("div",{class:"ftop"},h("button",{class:"btn ghost",type:"button",onclick:()=>{S.informe=false;renderAll()}},"← Volver"),
+      h("div",{class:"row"},
+        h("label",{class:"row",style:"gap:6px"},h("span",{class:"label",text:"Periodo"}),h("select",{style:"width:auto",onchange:e=>{S.retPeriodo=e.target.value;renderRetiros()}},Object.entries(PERIODOS).map(([k,v])=>h("option",{value:k,selected:S.retPeriodo===k},v)))),
+        h("label",{class:"row",style:"gap:6px"},h("span",{class:"label",text:"Curso"}),h("select",{style:"width:auto",onchange:e=>{S.retCurso=e.target.value;renderRetiros()}},h("option",{value:""},"Todos"),cursosOrd().map(c=>h("option",{value:c.id,selected:S.retCurso===c.id},c.nombre)))),
+        h("label",{class:"row",style:"gap:6px"},h("span",{class:"label",text:"Justificado por apoderado titular"}),h("select",{id:"retJust",style:"width:auto",onchange:e=>{S.retJust=e.target.value;renderRetiros()}},[["","Todos"],["si","Sí"],["no","No"]].map(([k,v])=>h("option",{value:k,selected:S.retJust===k},v)))),
+        downloads?h("button",{class:"btn primary",type:"button",onclick:retirosPDF},"Descargar informe PDF"):null)),
+    h("section",{class:"card"},h("div",{class:"nhead"},h("div",{},h("div",{class:"label",text:"Control de retiros · "+PERIODOS[S.retPeriodo]+(S.retCurso?" · "+((cursoDe(S.retCurso)||{}).nombre||""):"")+(S.retJust?" · Justificado por apoderado titular: "+(S.retJust==="si"?"Sí":"No"):"")}),h("h2",{text:"Retiros durante la jornada"}),
+      h("div",{class:"muted",text:"Retiros registrados en la hoja de vida, con su modalidad y el estado de la firma en papel del apoderado."})))),
+    h("div",{class:"kpis"},
+      h("div",{class:"kpi"},h("b",{text:T.n}),h("span",{text:"Retiros"})),
+      h("div",{class:"kpi"},h("b",{text:T.alumnos}),h("span",{text:"Alumnos retirados"})),
+      h("div",{class:"kpi"},h("b",{text:T.titular}),h("span",{text:"Justificados por el apoderado titular ("+pct(T.titular,T.n)+")"})),
+      h("div",{class:"kpi"},h("b",{text:T.presTit}),h("span",{text:"Titular presencial"})),
+      h("div",{class:"kpi"},h("b",{text:T.noPres}),h("span",{text:"No presenciales autorizados por el titular"})),
+      h("div",{class:"kpi"},h("b",{text:T.autorizado}),h("span",{text:"Por persona autorizada"})),
+      h("div",{class:"kpi hl"},h("b",{text:T.pendientes}),h("span",{text:"Pendientes de firma en papel"}))),
+    h("section",{class:"card"},h("div",{class:"secth"},h("h3",{text:"Por curso"})),
+      h("div",{class:"tablebox"},h("table",{class:"nom inf"},h("thead",{},h("tr",{},th("Curso"),th("Retiros",1),th("Alumnos",1),th("Titular presencial",1),th("No presencial (titular)",1),th("Persona autorizada",1),th("Firma pendiente",1))),
+        h("tbody",{},D.porCurso.map(x=>h("tr",{},h("td",{text:x.c.nombre}),h("td",{class:"num",text:x.n}),h("td",{class:"num",text:x.al}),h("td",{class:"num",text:x.presTit}),h("td",{class:"num",text:x.noPres}),h("td",{class:"num",text:x.aut}),h("td",{class:"num",text:x.pend}))))))),
+    h("section",{class:"card"},h("div",{class:"secth"},h("h3",{text:"Por motivo"})),
+      D.porMotivo.length?h("div",{class:"tablebox"},h("table",{class:"nom inf"},h("tbody",{},D.porMotivo.map(([k,v])=>h("tr",{},h("td",{text:k}),h("td",{class:"num",text:v}),h("td",{},h("div",{class:"barbox"},h("i",{style:"width:"+(v/maxM*100)+"%;background:var(--ret)"})))))))):h("div",{class:"empty",style:"padding:20px",text:"Sin retiros en el periodo."})),
+    h("section",{class:"card"},h("div",{class:"secth"},h("h3",{text:"Detalle de retiros"}),h("span",{class:"muted",text:D.det.length+" en el periodo"})),
+      D.det.length?h("div",{class:"tablebox"},h("table",{class:"nom inf"},h("thead",{},h("tr",{},th("Fecha"),th("Hora"),th("Alumno"),th("Curso"),th("Modalidad"),th("Retira"),th("Motivo"),th("Justificado por apoderado titular"),th("Firma"))),
+        h("tbody",{},D.det.map(({e,nombre,curso,aid})=>h("tr",{},h("td",{class:"mono",text:fdate(e.fecha)}),h("td",{class:"mono",text:e.hora||""}),
+          h("td",{},aid?h("button",{class:"nm",type:"button",onclick:()=>selectAlumno(aid),text:nombre}):nombre),h("td",{text:curso}),
+          h("td",{text:(e.modalidad||"").replace(/^Presencial: /,"Presencial · ").replace(/^No presencial: /,"No presencial · ")+(e.medioAut?" ("+e.medioAut.toLowerCase()+")":"")}),
+          h("td",{text:(e.retira||"")+(e.parentesco?" · "+e.parentesco:"")}),h("td",{text:e.motivoRetiro||""}),
+          h("td",{},h("span",{class:"st"+(esTitular(e)?" ok":""),text:esTitular(e)?"Sí":"No"})),
+          h("td",{},h("span",{class:"st "+(e.firmado?"ok":"warn"),text:e.firmado?"Recibida":"Pendiente"}))))))):h("div",{class:"empty",text:"No hay retiros registrados en este periodo."})));
+}
+async function pdfTabular({titulo,sub,kpis,tablas,archivo,horizontal}){
+  const folio=await folioSuelto();
+  await cargarScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js","jspdf");
+  const {jsPDF}=window.jspdf;const d=new jsPDF({unit:"mm",format:"a4",orientation:horizontal?"landscape":"portrait"});
+  const PW=horizontal?297:210,PH=horizontal?210:297,M=14,W=PW-2*M;let y=12;
+  const ink=()=>d.setTextColor(18,26,58),gris=()=>d.setTextColor(89,96,122);
+  try{d.addImage(await logoPNG(),"PNG",M,y,12,16.3)}catch(x){}
+  d.setFont("helvetica","bold");d.setFontSize(10.5);ink();d.text("INSTITUTO COMERCIAL ALBERTO VALENZUELA LLANOS",M+16,y+6);
+  d.setFont("helvetica","normal");d.setFontSize(8.5);gris();d.text("Inspectoría General · San Fernando",M+16,y+11);
+  d.setFont("helvetica","bold");d.setFontSize(10);d.setTextColor(11,23,102);d.text("Folio N° "+(folio||"s/n"),PW-M,y+6,{align:"right"});
+  y+=20;d.setDrawColor(240,196,25);d.setLineWidth(1.2);d.line(M,y,PW-M,y);y+=9;
+  d.setFont("helvetica","bold");d.setFontSize(14);d.setTextColor(11,23,102);d.text(titulo.toUpperCase(),M,y);
+  d.setFont("helvetica","normal");d.setFontSize(9);gris();d.text(sub,PW-M,y,{align:"right"});y+=7;
+  const kw=W/kpis.length;kpis.forEach(([l,v],i)=>{const x=M+i*kw;d.setFillColor(245,246,250);d.rect(x+0.5,y,kw-1,15,"F");d.setFont("helvetica","bold");d.setFontSize(12.5);ink();d.text(String(v),x+3,y+6.5);d.setFont("helvetica","normal");d.setFontSize(7);gris();d.text(d.splitTextToSize(l,kw-5)[0],x+3,y+11.8)});
+  y+=22;
+  for(const t of tablas){
+    const sc=W/t.cols.reduce((s,c)=>s+c[1],0);const cols=t.cols.map(c=>[c[0],c[1]*sc,c[2]]);
+    if(y>PH-35){d.addPage();y=16}
+    d.setFont("helvetica","bold");d.setFontSize(9.5);d.setTextColor(11,23,102);d.text(t.titulo.toUpperCase(),M,y);y+=3.5;
+    const head=()=>{d.setFillColor(11,23,102);d.rect(M,y,W,6.5,"F");d.setFont("helvetica","bold");d.setFontSize(7.2);d.setTextColor(255,255,255);let x=M;cols.forEach(c=>{d.text(d.splitTextToSize(c[0],c[1]-3)[0],c[2]?x+c[1]-2:x+2,y+4.5,c[2]?{align:"right"}:{});x+=c[1]});y+=6.5};
+    head();d.setFont("helvetica","normal");d.setFontSize(8);
+    if(!t.rows.length){ink();d.text("Sin datos.",M+2,y+5);y+=8}
+    t.rows.forEach((r,i)=>{if(y>PH-16){d.addPage();y=16;head();d.setFont("helvetica","normal");d.setFontSize(8)}
+      if(i%2){d.setFillColor(247,248,251);d.rect(M,y,W,5.8,"F")}ink();let x=M;cols.forEach((c,j)=>{const tx=d.splitTextToSize(String(r[j]??""),c[1]-3)[0]||"";d.text(tx,c[2]?x+c[1]-2:x+2,y+4,c[2]?{align:"right"}:{});x+=c[1]});y+=5.8});
+    y+=8;
+  }
+  const n=d.getNumberOfPages();for(let i=1;i<=n;i++){d.setPage(i);d.setFont("helvetica","normal");d.setFontSize(7.5);gris();d.text("Hoja de Vida del Estudiante · "+titulo+" · generado el "+fdate(hoy(),{day:"numeric",month:"long",year:"numeric"}),M,PH-8);d.text("Página "+i+" de "+n,PW-M,PH-8,{align:"right"})}
+  await downloads.save({filename:archivo,data:d.output("arraybuffer")});
+}
+async function retirosPDF(){
+  if(!downloads)return;toast("Generando informe…");const D=datosRetiros(),T=D.tot;
+  try{await pdfTabular({titulo:"Informe de retiros durante la jornada",horizontal:true,
+    sub:PERIODOS[S.retPeriodo]+(S.retCurso?" · "+((cursoDe(S.retCurso)||{}).nombre||""):" · todos los cursos")+(S.retJust?" · justificado por titular: "+(S.retJust==="si"?"Sí":"No"):"")+" · al "+fdate(hoy(),{day:"numeric",month:"long",year:"numeric"}),
+    kpis:[["Retiros",T.n],["Alumnos retirados",T.alumnos],["Justificados por titular",T.titular+" ("+pct(T.titular,T.n)+")"],["Titular presencial",T.presTit],["No presencial (titular)",T.noPres],["Persona autorizada",T.autorizado],["Firma pendiente",T.pendientes]],
+    tablas:[{titulo:"Por curso",cols:[["Curso",40],["Retiros",20,1],["Alumnos",20,1],["Titular presencial",28,1],["No presencial (titular)",32,1],["Persona autorizada",28,1],["Firma pendiente",24,1]],rows:D.porCurso.map(x=>[x.c.nombre,x.n,x.al,x.presTit,x.noPres,x.aut,x.pend])},
+      {titulo:"Por motivo",cols:[["Motivo",60],["Retiros",20,1]],rows:D.porMotivo},
+      {titulo:"Detalle",cols:[["Fecha",18],["Hora",11],["Alumno",48],["Curso",20],["Modalidad",50],["Retira",38],["Motivo",28],["Just. titular",13],["Firma",16]],
+        rows:D.det.map(({e,nombre,curso})=>[fdate(e.fecha),e.hora||"",nombre,curso,(e.modalidad||"")+(e.medioAut?" ("+e.medioAut.toLowerCase()+")":""),(e.retira||"")+(e.parentesco?" · "+e.parentesco:""),e.motivoRetiro||"",esTitular(e)?"Sí":"No",e.firmado?"Recibida":"Pendiente"])}],
+    archivo:"informe-retiros-"+S.retPeriodo+"-"+hoy()+".pdf"})}
+  catch(e){if(!e||e.code!=="declined")toast("No se pudo generar el informe.")}
+}
+
+/* ---------- suspensión ---------- */
+function fechaISO(d){return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)}
+function aFecha(s){const[y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)}
+function esHabil(d){const w=d.getDay();return w!==0&&w!==6}
+function sigHabil(s){const d=aFecha(s);do{d.setDate(d.getDate()+1)}while(!esHabil(d));return fechaISO(d)}
+/* Días corridos (incluye sábados y domingos); el día en que se aplica la medida no se cuenta. */
+function calcSusp(base,dias){
+  const d=aFecha(base);d.setDate(d.getDate()+1);const ini=fechaISO(d);
+  d.setDate(d.getDate()+Math.max(1,dias)-1);const fin=fechaISO(d);
+  return{ini,fin,reintegro:sigHabil(fin)};
+}
+function diaAnterior(s){const d=aFecha(s);d.setDate(d.getDate()-1);return fechaISO(d)}
+function abrirSuspension(ed){
+  const a=ed?S.alumnos.find(x=>x.id===ed.alumnoId):alumnoActual();if(!a)return;const mail=(a.emailApoderado||"").trim();
+  const nmAutor=h("span");
+  const base=inp("sBase",ed?(ed.fechaSuspension||diaAnterior(ed.desde)):hoy(),"date");
+  const desde=inp("sDesde",ed?ed.desde:"","date"),dias=h("input",{type:"number",id:"sDias",min:"1",max:"30",value:String(ed?ed.dias:1)});
+  const hasta=inp("sHasta",ed?ed.hasta:"","date"),reint=inp("sReint",ed?ed.reintegro:"","date");
+  const aviso=h("p",{class:"hint",role:"status"});
+  const TXT="Los días se cuentan corridos, incluidos sábados y domingos, a partir del día siguiente a la fecha de la suspensión. El reintegro se fija en el primer día de lunes a viernes después del último día; si es feriado, ajústalo a mano.";
+  const recalcular=()=>{const n=Math.max(1,parseInt(dias.value)||1);if(!base.value)return;const c=calcSusp(base.value,n);desde.value=c.ini;hasta.value=c.fin;reint.value=c.reintegro};
+  base.addEventListener("change",recalcular);dias.addEventListener("input",recalcular);
+  aviso.textContent=TXT;if(!ed)recalcular();
+  const chk=h("input",{type:"checkbox",checked:!!mail&&!ed,disabled:!mail});
+  const btn=h("button",{class:"btn primary",type:"submit"},ed?"Guardar cambios":"Registrar suspensión y generar carta");
+  abrirModal(ed?"Editar suspensión":"Suspensión de clases",h("form",{class:"mbody stack",onsubmit:async e=>{
+      e.preventDefault();const v=id=>$(id).value.trim();
+      const desc=v("sDesc");if(!desc){$("sDesc").focus();toast("Describe los hechos que motivan la medida.");return}
+      if(!base.value||!desde.value||!hasta.value||!reint.value||hasta.value<desde.value){toast("Revisa las fechas de la suspensión.");return}
+      const ev={alumnoId:a.id,cursoId:a.cursoId,tipo:"suspension",fecha:base.value,fechaSuspension:base.value,desde:desde.value,dias:Math.max(1,parseInt(dias.value)||1),hasta:hasta.value,reintegro:reint.value,
+        gravedad:v("sGrav"),articulo:v("sArt"),descripcion:desc,medidas:v("sMed"),citaFecha:v("sCitaF"),citaHora:v("sCitaH"),citaLugar:v("sCitaL"),citaCon:v("sCitaC"),
+        fechaNotificacion:ed&&ed.fechaNotificacion||hoy(),autor:ed?ed.autor||"":S.uid||"",creado:ed?ed.creado||new Date().toISOString():new Date().toISOString()};
+      if(ed){["firmado","firmaNombre","firmaFecha","firmaPapel","avisoEnviado","avisoA","folio"].forEach(k=>{if(ed[k]!=null)ev[k]=ed[k]});ev.editado=new Date().toISOString();ev.editadoPor=S.uid||""}
+      else{try{ev.folio=await siguienteFolio()}catch(x){}}
+      const ref=ed?db.doc("eventos/"+ed.id):db.collection("eventos").doc();
+      btn.disabled=true;btn.textContent="Guardando…";
+      const ok=await guardar(()=>ref.set(ev),ed?"Suspensión actualizada":"Suspensión registrada");
+      if(!ok){btn.disabled=false;btn.textContent=ed?"Guardar cambios":"Registrar suspensión y generar carta";return}
+      const env=chk.checked;cerrarModal();
+      if(!ed){const evF={id:ref.id,...ev};let pdf=null;try{pdf=await generarPDF(evF,null)}catch(x){toast("No se pudo generar la carta.")}if(env)await enviarAviso(evF,pdf)}
+    }},
+    h("div",{class:"firmares"},h("b",{text:a.nombre}),((cursoDe(a.cursoId)||{}).nombre||"")+(a.rut?" · RUT "+a.rut:"")+" · Apoderado(a): "+(a.apoderado||"—")),
+    h("div",{class:"label",text:"Medida"}),
+    h("div",{class:"grid2"},fld("Fecha de la suspensión (no se cuenta)",base),fld("Días de suspensión (corridos)",dias),fld("Primer día suspendido",desde),fld("Último día suspendido",hasta),fld("Reintegro a clases",reint)),
+    aviso,
+    h("div",{class:"grid2"},fld("Tipo de falta",sel("sGrav",["Gravísima","Grave"],ed&&ed.gravedad||"Gravísima")),fld("Artículo del Reglamento Interno",inp("sArt",ed&&ed.articulo,"text","Ej.: Art. 45, letra c)"))),
+    fld("Hechos que motivan la medida (máximo 350 caracteres)",areaCont("sDesc",ed?ed.descripcion:"",4)),
+    fld("Medidas formativas o pedagógicas (opcional, máximo 350 caracteres)",areaCont("sMed",ed?ed.medidas:"",2)),
+    h("div",{class:"label",text:"Citación al apoderado"}),
+    h("div",{class:"grid2"},fld("Fecha",inp("sCitaF",ed?ed.citaFecha:sigHabil(hoy()),"date")),fld("Hora",inp("sCitaH",ed?ed.citaHora:"08:30","time")),
+      fld("Lugar",inp("sCitaL",ed?ed.citaLugar:"Inspectoría General")),fld("Con",inp("sCitaC",ed?ed.citaCon:(inspectorDe((cursoDe(a.cursoId)||{}).nombre).nombre||"Inspector(a) General")))),
+    ed?null:h("label",{class:"chkrow"},chk,h("span",{text:mail?"Enviar la carta por correo a "+mail:"El alumno no tiene correo de apoderado registrado; descarga la carta y entrégala en papel."})),
+    h("div",{class:"row",style:"justify-content:flex-end"},h("button",{class:"btn ghost",type:"button",onclick:cerrarModal},"Cancelar"),btn)));
+}
+async function construirCarta(ev,firma){
+  await cargarScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js","jspdf");
+  const {jsPDF}=window.jspdf;const d=new jsPDF({unit:"mm",format:"a4"});
+  const a=S.alumnos.find(x=>x.id===ev.alumnoId)||{};const c=cursoDe(a.cursoId)||cursoDe(ev.cursoId)||{};
+  const nm=await nombres([ev.autor].filter(Boolean));const autor=nm[ev.autor]||"";
+  const PW=210,PH=297,M=22,W=PW-2*M;let y=14;const largo={day:"numeric",month:"long",year:"numeric"};
+  const ink=()=>d.setTextColor(18,26,58),gris=()=>d.setTextColor(89,96,122);
+  const ensure=hh=>{if(y+hh>PH-20){d.addPage();y=22}};
+  try{d.addImage(await logoPNG(),"PNG",M,y,15,20.4)}catch(x){}
+  d.setFont("helvetica","bold");d.setFontSize(10.5);ink();d.text("INSTITUTO COMERCIAL ALBERTO VALENZUELA LLANOS",M+19,y+7);
+  d.setFont("helvetica","normal");d.setFontSize(8.5);gris();d.text("Inspectoría General · Avda. Manso de Velasco 389, San Fernando · (72) 2847263",M+19,y+12.5);
+  d.setFont("helvetica","bold");d.setFontSize(10);d.setTextColor(11,23,102);d.text("Folio N° "+(ev.folio||"s/n"),PW-M,y+7,{align:"right"});d.setFont("helvetica","normal");d.setFontSize(8.5);gris();
+  y+=24;d.setDrawColor(240,196,25);d.setLineWidth(1.2);d.line(M,y,PW-M,y);y+=8;
+  d.setFont("helvetica","normal");d.setFontSize(10.5);ink();d.text("San Fernando, "+fdate(ev.fechaNotificacion||hoy(),largo),PW-M,y,{align:"right"});y+=9;
+  d.setFont("helvetica","bold");d.setFontSize(13.5);d.setTextColor(11,23,102);d.text("NOTIFICACIÓN DE SUSPENSIÓN Y CITACIÓN AL APODERADO",PW/2,y,{align:"center"});y+=9;
+  d.setFont("helvetica","normal");d.setFontSize(10.5);ink();
+  d.text("Señor(a)",M,y);y+=5.4;d.setFont("helvetica","bold");d.text(a.apoderado||"Apoderado(a)",M,y);y+=5.4;d.setFont("helvetica","normal");
+  d.text("Apoderado(a) de "+(a.nombre||"")+(c.nombre?", "+c.nombre:""),M,y);y+=5.4;d.text("Presente",M,y);y+=7;
+  d.setFont("helvetica","bold");d.text("Ref.: Notifica medida disciplinaria de suspensión de clases y cita a entrevista.",M,y);y+=7;
+  const p=(txt,opt={})=>{d.setFont("helvetica",opt.b?"bold":"normal");d.setFontSize(10.5);ink();for(const l of d.splitTextToSize(txt,W)){ensure(6);d.text(l,M,y);y+=5}y+=2.6};
+  const nd=ev.dias||1,hab=nd+" día"+(nd==1?"":"s")+" corrido"+(nd==1?"":"s");const fb=ev.fechaSuspension||diaAnterior(ev.desde);
+  p("Por medio de la presente, Inspectoría General informa a usted que su pupilo(a) "+(a.nombre||"")+(a.rut?", RUT "+a.rut:"")+", estudiante de "+(c.nombre||"")+", ha sido sancionado(a) con fecha "+fdate(fb,largo)+" con la medida disciplinaria de suspensión de clases por "+hab+", contados desde el día siguiente a dicha fecha: desde el "+fdate(ev.desde,largo)+" hasta el "+fdate(ev.hasta,largo)+", ambas fechas inclusive, debiendo reintegrarse a clases el día "+fdate(ev.reintegro,largo)+".");
+  ensure(12);d.setFont("helvetica","bold");d.setFontSize(9);gris();d.text("HECHOS QUE MOTIVAN LA MEDIDA",M,y);y+=5.4;p(ev.descripcion||"");
+  p("La conducta descrita constituye una falta "+String(ev.gravedad||"gravísima").toLowerCase()+(ev.articulo?" conforme a lo dispuesto en el "+ev.articulo:"")+" del Reglamento Interno de Convivencia Escolar del establecimiento.");
+  if(ev.medidas)p("Durante el periodo de suspensión, el estudiante deberá cumplir las siguientes medidas formativas o pedagógicas: "+ev.medidas);
+  // recuadro de citación
+  ensure(36);d.setFillColor(245,246,250);d.setDrawColor(213,217,230);d.setLineWidth(.3);d.rect(M,y,W,31,"FD");
+  d.setFont("helvetica","bold");d.setFontSize(9);d.setTextColor(11,23,102);d.text("CITACIÓN AL APODERADO",M+5,y+6.5);
+  const fila=(k,v,yy)=>{d.setFont("helvetica","bold");d.setFontSize(10);ink();d.text(k,M+5,yy);d.setFont("helvetica","normal");d.text(v||"—",M+28,yy)};
+  fila("Fecha:",ev.citaFecha?fdate(ev.citaFecha,{weekday:"long",day:"numeric",month:"long",year:"numeric"}):"",y+13);
+  fila("Hora:",ev.citaHora?ev.citaHora+" horas":"",y+18.5);fila("Lugar:",ev.citaLugar||"Inspectoría General",y+24);fila("Con:",ev.citaCon||"Inspector(a) General",y+29.5-0.5);
+  y+=36;
+  p("Su asistencia es obligatoria. En caso de no poder asistir en la fecha indicada, le solicitamos comunicarse con anticipación con Inspectoría General al teléfono (72) 2847263 para coordinar una nueva fecha.");
+  p("Se informa que, conforme al Reglamento Interno, el apoderado(a) puede solicitar por escrito la reconsideración de esta medida dentro del plazo que dicho reglamento establece.");
+  p("Sin otro particular, saluda atentamente,");
+  if(y+42>PH-13){d.addPage();y=22}y+=1;const bw=W/2-8,fy=y+21;
+  if(firma&&firma.img){try{d.addImage(firma.img,"PNG",PW-M-bw+4,y,bw-8,19)}catch(x){}}
+  d.setDrawColor(18,26,58);d.setLineWidth(.4);d.line(M,fy,M+bw,fy);d.line(PW-M-bw,fy,PW-M,fy);
+  d.setFont("helvetica","bold");d.setFontSize(9.5);ink();const insp=inspectorDe(c.nombre);d.text(insp.nombre||"Inspector(a) General",M+bw/2,fy+5,{align:"center"});d.text("Recibí copia y tomé conocimiento",PW-M-bw/2,fy+5,{align:"center"});
+  d.setFont("helvetica","normal");d.setFontSize(8.5);gris();d.text(insp.cargo,M+bw/2,fy+10,{align:"center"});
+  if(firma){let yy=fy+10;d.text(firma.nombre||"",PW-M-bw/2,yy,{align:"center"});if(firma.rut){yy+=4.5;d.text("RUT "+firma.rut,PW-M-bw/2,yy,{align:"center"})}yy+=4.5;d.text("Firmado el "+new Date(firma.fecha).toLocaleString("es-CL",{dateStyle:"long",timeStyle:"short"}),PW-M-bw/2,yy,{align:"center"})}
+  else{d.text("Nombre: ______________________________",PW-M-bw/2,fy+11,{align:"center"});d.text("RUT: __________________  Fecha: ___/___/____",PW-M-bw/2,fy+17,{align:"center"})}
+  const n=d.getNumberOfPages();const gen=new Date().toLocaleString("es-CL",{dateStyle:"long",timeStyle:"short"});
+  for(let i=1;i<=n;i++){d.setPage(i);d.setFont("helvetica","normal");d.setFontSize(7.5);gris();d.text("Hoja de Vida del Estudiante · Documento generado el "+gen,M,PH-10);d.text("Página "+i+" de "+n,PW-M,PH-10,{align:"right"})}
+  return d;
+}
+
+/* ---------- descarga ---------- */
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+async function descargar(){
+  const a=alumnoActual(); if(!a||!downloads)return; const c=cursoDe(a.cursoId);
+  const list=filtrados(); const n=await nombres([...new Set(list.map(e=>e.autor).filter(Boolean))]); const folioH=await folioSuelto();
+  const k={positiva:0,negativa:0,apoderado:0,justificacion:0,suspension:0}; list.forEach(e=>k[e.tipo]!=null&&k[e.tipo]++);
+  const col={positiva:"#2b7a4b",negativa:"#b3262f",apoderado:"#6a4a9e",justificacion:"#a86c12",conocimiento:"#0f6b74",suspension:"#8c1c3a",retiro:"#1f6aa5"};
+  const filas=list.map(e=>`<tr><td class="f">${esc(fdate(e.fecha))}</td><td><b style="color:${col[e.tipo]}">${esc(TIPOS[e.tipo].label)}</b>${e.gravedad?`<br><small>Falta ${esc(e.gravedad.toLowerCase())}</small>`:""}</td><td>${esc(e.descripcion).replace(/\n/g,"<br>")}${extras(e).map(([x,y])=>`<br><small><b>${esc(x)}:</b> ${esc(y)}</small>`).join("")}</td><td><small>${esc(n[e.autor]||"")}</small></td></tr>`).join("");
+  const html=`<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Hoja de vida - ${esc(a.nombre)}</title><style>
+body{font-family:"Segoe UI",Arial,sans-serif;color:#121a3a;margin:28px;font-size:12.5px}
+.enc{display:flex;gap:14px;align-items:center;border-bottom:3px solid #f0c419;padding-bottom:10px}.enc img{width:52px}
+.enc h1{font-family:"Arial Narrow",Arial,sans-serif;font-size:21px;margin:0;text-transform:uppercase;letter-spacing:.02em;color:#0b1766}
+.sub{color:#59607a;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px}
+.perfil{display:flex;gap:18px;margin-top:14px}.foto{width:105px;height:140px;object-fit:cover;border:1px solid #d5d9e6;border-radius:4px}
+.datos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 18px;flex:1}.datos div span{display:block;font-size:10px;color:#59607a;text-transform:uppercase}
+.nom{grid-column:1/-1;font-size:17px;font-weight:600}
+table{width:100%;border-collapse:collapse;margin-top:14px}th,td{border-bottom:1px solid #d5d9e6;padding:6px 8px;text-align:left;vertical-align:top}
+th{font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:#59607a;background:#f5f6fa}.f{white-space:nowrap;font-family:Consolas,monospace}
+.tot{margin-top:12px}.firma{margin-top:70px;display:flex;justify-content:flex-end}.firma div{border-top:1px solid #121a3a;width:260px;text-align:center;padding-top:4px}
+@media print{body{margin:14mm}}</style></head><body>
+<div style="text-align:right;font-weight:bold;color:#0b1766">Folio N° ${esc(folioH||"s/n")}</div><div class="enc"><img src="${LOGO}" alt=""><div><h1>Hoja de vida del estudiante</h1><div class="sub">Instituto Comercial Alberto Valenzuela Llanos · Inspectoría General · San Fernando</div></div></div>
+<div class="perfil">${S.foto?`<img class="foto" src="${S.foto}" alt="">`:""}<div class="datos"><div class="nom">${esc(a.nombre)}</div>
+<div><span>RUT</span>${esc(a.rut||"—")}</div><div><span>Curso</span>${esc(c?c.nombre:"")}</div><div><span>Profesor(a) jefe</span>${esc(c&&c.profesorJefe||"—")}</div>
+<div><span>Apoderado(a)</span>${esc(a.apoderado||"—")}</div><div><span>Teléfono</span>${esc(a.telApoderado||"—")}</div>
+<div><span>Periodo</span>${esc(PERIODOS[S.periodo])}${S.filtro!=="todos"?" · "+esc(TIPOS[S.filtro].plural):""}</div></div></div>
+<div class="tot">Positivas: <b>${k.positiva}</b> · Negativas: <b>${k.negativa}</b> · Atenciones de apoderado: <b>${k.apoderado}</b> · Justificaciones: <b>${k.justificacion}</b> · Suspensiones: <b>${k.suspension}</b></div>
+<table><thead><tr><th>Fecha</th><th>Tipo</th><th>Detalle</th><th>Registró</th></tr></thead><tbody>${filas||'<tr><td colspan="4">Sin registros en el periodo.</td></tr>'}</tbody></table>
+<p class="sub" style="margin-top:14px">Emitido el ${esc(fdate(hoy(),{day:"numeric",month:"long",year:"numeric"}))}</p>
+<div class="firma"><div>${esc(inspectorDe(c&&c.nombre).nombre)}<br>${esc(inspectorDe(c&&c.nombre).cargo)}</div></div></body></html>`;
+  const archivo="hoja-de-vida-"+sinTildes(a.nombre||"alumno").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"").slice(0,60)+".html";
+  try{await downloads.save({filename:archivo,data:html});toast("Descargada. Ábrela en el navegador para imprimir o guardar como PDF.")}
+  catch(e){if(e&&e.code!=="declined")toast("No se pudo descargar el archivo.")}
+}
+
+/* ---------- arranque ---------- */
+renderAll();
+if(window.claude&&typeof window.claude.use==="function"){
+  claude.use("user").then(async u=>{user=u;if(!u)return;try{S.uid=await u.id()}catch(e){}try{if(await u.can("data.write")===false){S.canWrite=false;renderAll()}}catch(e){}});
+  claude.use("downloads").then(d=>{downloads=d;if(S.alumnoId&&!inlineAbierto()&&$("ov").hidden)renderMain()});
+  claude.use("mcp").then(m=>{mcp=m});
+  claude.use("db").then(d=>{
+    if(!d){S.db=false;setStatus("bad","Base de datos no disponible");renderAll();return}
+    db=d;S.db=true;setStatus("ok","Registros compartidos en línea");
+    let primera=true;
+    db.collection("cursos").onSnapshot(s=>{
+      S.cursos=s.docs.map(x=>({id:x.id,...x.data()}));
+      if(primera){primera=false;const g=lsGet("hv.curso");const pick=cursoDe(g)||cursosOrd()[0];if(pick){selectCurso(pick.id);return}}
+      if(S.cursoId&&!cursoDe(S.cursoId)){S.cursoId=null;S.alumnoId=null}
+      renderAll();
+    },err);
+    db.collection("eventos").where("tipo","==","suspension").onSnapshot(s=>{S.susp=s.docs.map(x=>({id:x.id,...x.data()}));if(S.informe==="susp"&&$("ov").hidden)renderMain()},err);
+    db.collection("eventos").where("tipo","==","retiro").onSnapshot(s=>{S.retiros=s.docs.map(x=>({id:x.id,...x.data()}));if(S.informe==="retiros"&&$("ov").hidden)renderMain()},err);
+    db.collection("alumnos").onSnapshot(s=>{
+      S.alumnos=s.docs.map(x=>({id:x.id,...x.data()}));
+      if(S.alumnoId&&!alumnoActual())S.alumnoId=null;
+      renderFiltros();
+      if(S.alumnoId){const a=alumnoActual();if(a&&a.cursoId!==S.cursoId){selectAlumno(a.id);return}}
+      if((!S.alumnoId||($("ov").hidden&&!inlineAbierto()))&&!(S.informe&&!$("ov").hidden))renderMain();
+    },err);
+  });
+} else {S.db=false;setStatus("bad","Vista sin conexión");renderAll()}
+</script>
+
+</body>
+</html>
