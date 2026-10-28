@@ -265,8 +265,7 @@ const TIPOS={
 };
 /* Inspector General que firma según nivel: 1° y 2° Medio / 3° y 4° Medio */
 function inspectorDe(cursoNombre){
-  const t=sinTildes(String(cursoNombre||"")).trim();const m=t.match(/^([1-4])/);
-  const n=m?Number(m[1]):/^primer/.test(t)?1:/^segund/.test(t)?2:/^tercer/.test(t)?3:/^cuart/.test(t)?4:0;
+  const m=String(cursoNombre||"").match(/^\s*([1-4])/);const n=m?Number(m[1]):0;
   if(n===1||n===2)return{nombre:"Claudio Valenzuela Fuentes",cargo:"Inspector General · 1° y 2° Medio"};
   if(n===3||n===4)return{nombre:"Luis Cádiz Fuenzalida",cargo:"Inspector General · 3° y 4° Medio"};
   return{nombre:"",cargo:"Inspector(a) General"};
