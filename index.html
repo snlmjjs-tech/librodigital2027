@@ -483,7 +483,7 @@ function renderNomina(){
       ...COUNT_TIPOS.map(t=>h("td",{class:"c"},h("span",{class:"dot "+TIPOS[t].cls+(k[t]?"":" z"),text:k[t]||0}))),
       S.canWrite?h("td",{class:"act",onclick:e=>e.stopPropagation()},h("button",{class:"btn ghost",type:"button",onclick:()=>abrirEditar(a)},"Editar")):null)}))));
   $("main").replaceChildren(h("section",{class:"card"},head,selbar,body),
-    lista.length?h("p",{class:"hint",text:"P positivas · N negativas · A atenciones de apoderado · J justificaciones · S suspensiones. Haz clic en un alumno para abrir su hoja de vida; marca las casillas para cambiar de curso o eliminar varios a la vez."}):null);
+    ...(lista.length?[h("p",{class:"hint",text:"P positivas · N negativas · A atenciones de apoderado · J justificaciones · S suspensiones. Haz clic en un alumno para abrir su hoja de vida; marca las casillas para cambiar de curso o eliminar varios a la vez."})]:[]));
 }
 
 function renderFicha(){
