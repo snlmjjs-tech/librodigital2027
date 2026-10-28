@@ -253,6 +253,51 @@ table.nom{width:100%;border-collapse:collapse;min-width:640px}
 <div class="toast" id="toast" role="status" hidden></div>
 
 <script>
+/* Modo independiente (GitHub Pages u otro hosting): si la página no corre dentro de claude.ai,
+   se simula la base de datos con IndexedDB del navegador, para que funcione igual que en claude.ai.
+   Los datos quedan guardados solo en este navegador. */
+(function(){
+  if(window.claude&&typeof window.claude.use==="function")return;
+  document.documentElement.setAttribute("data-theme","light");
+  const mem={};const subs=new Set();let idb=null;
+  function open(){return new Promise(ok=>{try{const r=indexedDB.open("hoja-vida",1);r.onupgradeneeded=()=>r.result.createObjectStore("docs");
+    r.onsuccess=()=>{idb=r.result;const tx=idb.transaction("docs");const st=tx.objectStore("docs");const c=st.openCursor();
+      c.onsuccess=()=>{const cur=c.result;if(cur){mem[cur.key]=cur.value;cur.continue()}else ok()};c.onerror=()=>ok()};r.onerror=()=>ok()}catch(e){ok()}})}
+  function persist(path,val){if(!idb)return;try{const st=idb.transaction("docs","readwrite").objectStore("docs");val===undefined?st.delete(path):st.put(val,path)}catch(e){}}
+  const clone=o=>JSON.parse(JSON.stringify(o));
+  const snapDoc=(col,id)=>{const v=mem[col+"/"+id];return{id,exists:v!==undefined,data:()=>v===undefined?undefined:clone(v)}};
+  function notify(){subs.forEach(f=>{try{f()}catch(e){}})}
+  function docRef(path){
+    const [col,id]=path.split("/");
+    return{id,path,
+      get:async()=>snapDoc(col,id),
+      set:async d=>{mem[path]=clone(d);persist(path,mem[path]);notify()},
+      update:async d=>{if(mem[path]===undefined)throw new Error("not-found");mem[path]={...mem[path],...clone(d)};persist(path,mem[path]);notify()},
+      delete:async()=>{delete mem[path];persist(path,undefined);notify()},
+      onSnapshot(cb){const f=()=>cb(snapDoc(col,id));subs.add(f);setTimeout(f,0);return()=>subs.delete(f)},
+      acquire:async()=>({acquired:true})};
+  }
+  function query(col,filters){
+    const run=()=>({docs:Object.keys(mem).filter(k=>k.startsWith(col+"/")).map(k=>snapDoc(col,k.slice(col.length+1)))
+      .filter(d=>filters.every(([f,op,v])=>d.data()[f]===v))});
+    return{where:(f,op,v)=>query(col,[...filters,[f,op,v]]),get:async()=>run(),
+      onSnapshot(cb){const f=()=>cb(run());subs.add(f);setTimeout(f,0);return()=>subs.delete(f)}};
+  }
+  const rid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,10);
+  const db={doc:docRef,collection:col=>Object.assign(query(col,[]),{doc:id=>docRef(col+"/"+(id||rid()))})};
+  const downloads={save:async({filename,data})=>{
+    const b=new Blob([data],{type:/\.pdf$/i.test(filename)?"application/pdf":"text/html"});
+    const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=filename;document.body.append(a);a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)}};
+  const user={id:async()=>"local",can:async()=>true,profiles:async ids=>Object.fromEntries(ids.map(i=>[i,{name:"Usuario"}]))};
+  window.claude={local:true,use:async n=>{
+    if(n==="db"){await open();return db}
+    if(n==="downloads")return downloads;
+    if(n==="user")return user;
+    return null}};
+})();
+</script>
+<script>
 const LOGO=document.querySelector(".crest").src;
 const TIPOS={
   positiva:{label:"Anotación positiva",plural:"Positivas",cls:"pos",desc:"Descripción de la anotación"},
@@ -1413,7 +1458,7 @@ if(window.claude&&typeof window.claude.use==="function"){
   claude.use("mcp").then(m=>{mcp=m});
   claude.use("db").then(d=>{
     if(!d){S.db=false;setStatus("bad","Base de datos no disponible");renderAll();return}
-    db=d;S.db=true;setStatus("ok","Registros compartidos en línea");
+    db=d;S.db=true;setStatus("ok",window.claude.local?"Registros guardados en este equipo":"Registros compartidos en línea");
     let primera=true;
     db.collection("cursos").onSnapshot(s=>{
       S.cursos=s.docs.map(x=>({id:x.id,...x.data()}));
